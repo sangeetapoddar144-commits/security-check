@@ -116,7 +116,14 @@ function next(){
 
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  const msg=`😄 Got you!\n\nTake a deep breath — nothing was wrong, and nothing was tracked.\nThis was just a tiny New Year surprise from Sangeeta💛\n\nMay 2026 fill your life and your family's life with joy, peace, and laughter.\nMay every moment together become a cherished memory, every challenge strengthen your bond, and every day remind you how loved and connected you are.\n\nRemember: Happiness grows when shared with family and kindness to others.\n\nAnd yes, you picked ${food} — good choice 😋`;
+  const msg=` 😝 Got you!  
+
+Take a deep breath — no alerts, no tracking, just harmless fun.  
+This little “security breach” was just a New Year surprise from **Sangeeta** 💛  
+
+Remember: the only thing worth truly tracking is the love and presence of your family.  
+
+And you picked ${food} — may God always provide you a constant supply of it! 😋`;
   document.getElementById('finalMessage').innerHTML=msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
