@@ -212,15 +212,44 @@ function next(id){
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
   finalMsg.innerHTML = `
-    Take a deep breath — no alerts, no tracking 😊<br><br>
-    This was just a New Year surprise from me.<br><br>
-    <span style="color:green;font-weight:bold;">REMEMBER:</span>
-    The only thing worth truly tracking is the love and presence of your family and closed ones.<br><br>
-    May you always have plenty of <strong>${food}</strong> and <strong>sparkling smiles</strong> this year!! 😋<br><br>
-    One real thing worth doing as you start the year:<br>
-    🔐 Review your Google account security here: <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/security</a><br><br> 
-    New year, new starts, new security habits 😉<br><br>
-    <span style="color:#7f8fa;font-style:italic;">Authored by me, informed by the wider web.</span>
+  <p>Take a deep breath — no alerts, no tracking 😊</p>
+<p>This was just a New Year surprise from me.</p>
+
+<p>
+  <span class="remember">REMEMBER:</span>
+  The only thing worth truly tracking is the love and presence of your family and close ones.
+</p>
+
+<p>
+  May you always have plenty of <strong>Chocolate 🍫</strong> and
+  <strong>sparkling smiles</strong> this year!! 😋
+</p>
+
+<p>
+  One real thing worth doing as you start the year:<br>
+  🔐 Review your Google account security here:
+</p>
+
+<a
+  href="https://myaccount.google.com/security"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="security-link"
+>
+  https://myaccount.google.com/security
+</a>
+
+<p>New year, new starts, new security habits 😉</p>
+
+<p class="signature-note">
+  Authored by me, informed by the wider web.
+</p>
+
+<p class="signature">
+  — With love,<br>
+  <strong>Sangeeta</strong> 💛
+</p>
+
   `;
   final.classList.remove('hidden');
 }
