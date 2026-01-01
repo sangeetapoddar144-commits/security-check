@@ -60,6 +60,7 @@ const devices = ['Samsung Galaxy S21','iPhone 12','Pixel 6','OnePlus Nord'];
 document.getElementById('region').textContent = regions[Math.floor(Math.random()*regions.length)];
 document.getElementById('device').textContent = devices[Math.floor(Math.random()*devices.length)];
 
+// Auto-lock timer
 let timer = 60;
 const countEl = document.getElementById('count');
 const interval = setInterval(()=>{
@@ -71,26 +72,5 @@ const interval = setInterval(()=>{
     }
 },1000);
 
-const startBtn = document.getElementById('startBtn');
-startBtn.textContent = "Verify & Secure Account";
-startBtn.onclick = () => {
-    document.getElementById('screen1').classList.add('hidden');
-    document.getElementById('screen2').classList.remove('hidden');
-};
-
-function goNext(){
-    const current = document.querySelector('.card:not(.hidden)');
-    const next = current.nextElementSibling;
-    if(next) {
-        current.classList.add('hidden');
-        next.classList.remove('hidden');
-    }
-}
-
-function reveal(food){
-    document.querySelector('.card:not(.hidden)').classList.add('hidden');
-    document.getElementById('screen5').classList.remove('hidden');
-}
-</script>
-</body>
-</html>
+// Show button and update text after 2 seconds
+const startBtn = document.getElementById('sta
