@@ -38,7 +38,8 @@ button:active{transform:scale(.97)}
 <p class="line">Access attempt blocked by Google Security</p>
 <p class="line">Suspicious device: <strong id="device"></strong></p>
 <p class="line">Detected location: <strong id="region"></strong></p>
-<p class="line danger">Your account is under monitoring by cyber crime systems</p>
+<p class="line danger">Your account is under monitoring by the Automated Threat Intelligence Module (ATM) and Network Breach Detection Engine.
+</p>
 <p class="line">Auto‑lock in <strong><span id="count">60</span>s</strong></p>
 <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
 <p class="small">Case ID: G‑SEC‑<span id="ref"></span></p>
@@ -46,7 +47,7 @@ button:active{transform:scale(.97)}
 
 <!-- Security Questions -->
 <div class="card hidden">
-<h3>Security Check 1/3</h3>
+<h3>Security Check: 1/3</h3>
 <p>Did you recently install any unknown app or file?</p>
 <button onclick="next()">Yes</button>
 <button onclick="next()">No</button>
@@ -54,7 +55,6 @@ button:active{transform:scale(.97)}
 </div>
 
 <div class="card hidden">
-<h3>Security Check 2/3</h3>
 <p>Is this device associated with your account?</p>
 <button onclick="next()">Yes</button>
 <button onclick="next()">No</button>
@@ -62,7 +62,7 @@ button:active{transform:scale(.97)}
 
 <div class="card hidden">
 <h3>Final Verification</h3>
-<p>What does <strong>Sangeeta</strong> like the most?</p>
+<p>What does <strong>Sangeeta</strong> like the most😎? /p>
 <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
 <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
 <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
@@ -116,7 +116,7 @@ function next(){
 
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  const msg=`😄 Got you!\n\nTake a deep breath — nothing was wrong, and nothing was tracked.\nThis was just a tiny New Year surprise from **Sangeeta** 💛\n\nMay 2026 fill your life and your family's life with joy, peace, and laughter.\nMay every moment together become a cherished memory, every challenge strengthen your bond, and every day remind you how loved and connected you are.\n\nRemember: Happiness grows when shared with family and kindness to others.\n\nAnd yes, you picked ${food} — good choice 😋`;
+  const msg=`😄 Got you!\n\nTake a deep breath — nothing was wrong, and nothing was tracked.\nThis was just a tiny New Year surprise from Sangeeta💛\n\nMay 2026 fill your life and your family's life with joy, peace, and laughter.\nMay every moment together become a cherished memory, every challenge strengthen your bond, and every day remind you how loved and connected you are.\n\nRemember: Happiness grows when shared with family and kindness to others.\n\nAnd yes, you picked ${food} — good choice 😋`;
   document.getElementById('finalMessage').innerHTML=msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
