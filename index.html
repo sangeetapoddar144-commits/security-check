@@ -62,7 +62,7 @@ button:active{transform:scale(.97)}
 
 <div class="card hidden">
 <h3>Final Verification</h3>
-<p>What does <strong>Sangeeta</strong> like the most😎? /p>
+<p>What does <strong>Sangeeta</strong> like the most😎?</p>
 <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
 <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
 <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
@@ -70,7 +70,7 @@ button:active{transform:scale(.97)}
 
 <!-- Final Wholesome Reveal -->
 <div class="card hidden" id="finalReveal">
-<h2>😄 Got You!</h2>
+<h2>👻 Gotcha !!!</h2>
 <p id="finalMessage"></p>
 <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
@@ -116,14 +116,13 @@ function next(){
 
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  const msg=` 😝 Got you!  
-
-Take a deep breath — no alerts, no tracking, just harmless fun.  
-This little “security breach” was just a New Year surprise from **Sangeeta** 💛  
-
-Remember: the only thing worth truly tracking is the love and presence of your family.  
-
-And you picked ${food} — may God always provide you a constant supply of it! 😋`;
+  const msg = `
+😄 Got you!<br><br>
+Take a deep breath — no alerts, no tracking, just harmless fun.<br>
+This little “security breach” was just a New Year surprise from <strong>Sangeeta</strong> 💛<br><br>
+Remember: the only thing worth truly tracking is the love and presence of your family.<br><br>
+And you picked <strong>${food}</strong> — may God always provide you a constant supply of it! 😋
+`;
   document.getElementById('finalMessage').innerHTML=msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
