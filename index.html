@@ -48,10 +48,7 @@ button{
   background:linear-gradient(#1f2937,#111827);
   color:#e5e7eb;
 }
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
+button:disabled{opacity:.6}
 .primary{
   background:linear-gradient(#dc2626,#991b1b);
   border-color:#7f1d1d;
@@ -80,12 +77,10 @@ button:disabled{
 <!-- ALERT -->
 <div class="card" id="main">
   <h2>Security Alert</h2>
-
   <p class="line danger">Unusual sign-in attempt detected</p>
   <p class="line">Suspicious activity blocked</p>
   <p class="line">Device: <strong id="device"></strong></p>
   <p class="line">Location: <strong id="region"></strong></p>
-
   <p class="line alert">Action required to avoid restriction</p>
   <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
 
@@ -101,34 +96,48 @@ button:disabled{
 </div>
 
 <!-- QUESTIONS -->
-<div class="card hidden" id="questions">
-  <h3>Security Verification</h3>
-  <p>Was this sign-in attempt made by you?</p>
-  <button onclick="finalReveal()">Yes</button>
-  <button onclick="finalReveal()">No</button>
+<div class="card hidden" id="q1">
+  <h3>Security Check 1/4</h3>
+  <p>Did you attempt this sign-in?</p>
+  <button onclick="next('q2')">Yes</button>
+  <button onclick="next('q2')">No</button>
+</div>
+
+<div class="card hidden" id="q2">
+  <h3>Security Check 2/4</h3>
+  <p>Is this device familiar to you?</p>
+  <button onclick="next('q3')">Yes</button>
+  <button onclick="next('q3')">No</button>
+</div>
+
+<div class="card hidden" id="q3">
+  <h3>Security Check 3/4</h3>
+  <p>Did you download any unknown files or apps recently?</p>
+  <button onclick="next('q3')">Yes</button>
+  <button onclick="next('q3')">No</button>
+</div>
+  
+
+<div class="card hidden" id="q4">
+  <h3>Final Verification</h3>
+  <p>What is your favourite food? 👀</p>
+  <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
+  <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
+  <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
 </div>
 
 <!-- LOCKED -->
 <div class="card hidden" id="locked">
   <h2 class="danger">Account Locked</h2>
-  <p>
-    You did not respond to a critical security alert.
-    Your account has been temporarily locked.
-  </p>
-  <button class="primary" onclick="recover()">
-    RECOVER ACCOUNT
-  </button>
+  <p>You did not respond to a critical security alert.</p>
+  <button class="primary" onclick="recover()">RECOVER ACCOUNT</button>
 </div>
 
 <!-- FINAL -->
 <div class="card hidden" id="final">
   <h2>😄 Got you!</h2>
-  <p>
-    Relax — nothing was hacked.<br><br>
-    <span style="color:red;font-weight:bold;">REMEMBER:</span>
-    The only thing worth truly tracking is family, health and happiness 💛
-  </p>
-  <p>— With love, <strong>Sangeeta</strong></p>
+  <p id="finalMsg"></p>
+  <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
 
 <script>
@@ -153,7 +162,7 @@ function alertUser(p){
   navigator.vibrate && navigator.vibrate(p);
 }
 
-/* Buttons timing */
+/* Button escalation */
 setTimeout(()=>{
   verifyBtn.classList.remove('hidden');
   alertUser([200,100,200]);
@@ -176,27 +185,39 @@ const timer=setInterval(()=>{
     clearInterval(timer);
     main.classList.add('hidden');
     locked.classList.remove('hidden');
-    alertUser([700,200,700,200,700]);
+    alertUser([700,200,700]);
   }
 },1000);
 
-/* Actions */
-verifyBtn.onclick=goQuestions;
-reviewBtn.onclick=goQuestions;
+/* Navigation */
+verifyBtn.onclick=startQuestions;
+reviewBtn.onclick=startQuestions;
 
-function goQuestions(){
+function startQuestions(){
   clearInterval(timer);
   main.classList.add('hidden');
-  questions.classList.remove('hidden');
+  q1.classList.remove('hidden');
 }
 
 function recover(){
   locked.classList.add('hidden');
-  questions.classList.remove('hidden');
+  q1.classList.remove('hidden');
 }
 
-function finalReveal(){
+function next(id){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function reveal(food){
+  document.querySelector('.card:not(.hidden)').classList.add('hidden');
+  finalMsg.innerHTML = `
+    Take a deep breath — no alerts, no tracking 😊<br><br>
+    This was just a New Year surprise from <strong>Sangeeta</strong> 💛<br><br>
+    <span style="color:red;font-weight:bold;">REMEMBER:</span>
+    the only thing worth truly tracking is the love and presence of your family.<br><br>
+    May you always have plenty of <strong>${food}<strong> and sparkling smiles this year!!😋
+  `;
   final.classList.remove('hidden');
 }
 </script>
