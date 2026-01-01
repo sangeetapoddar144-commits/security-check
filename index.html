@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body { font-family: Arial,sans-serif; background:#0b0f14; color:#fff; text-align:center; padding:20px; }
-.card { background:#131a22; border-radius:10px; padding:20px; max-width:420px; margin:auto; }
+.card { background:#131a22; border-radius:10px; padding:20px; max-width:420px; margin:auto; margin-top:40px; }
 button { background:#e63946; color:white; border:none; padding:14px; font-size:16px; border-radius:6px; width:100%; cursor:pointer; }
 button:active{ transform:scale(0.98);}
 .hidden{ display:none;}
@@ -54,23 +54,55 @@ button:active{ transform:scale(0.98);}
 </div>
 
 <script>
+// ---------- Random region/device ----------
 const regions = ['Amsterdam, NL','Berlin, DE','London, UK','Singapore, SG'];
 const devices = ['Samsung Galaxy S21','iPhone 12','Pixel 6','OnePlus Nord'];
-
 document.getElementById('region').textContent = regions[Math.floor(Math.random()*regions.length)];
 document.getElementById('device').textContent = devices[Math.floor(Math.random()*devices.length)];
 
-// Auto-lock timer
+// ---------- Countdown timer ----------
 let timer = 60;
 const countEl = document.getElementById('count');
 const interval = setInterval(()=>{
-    timer--;
-    countEl.textContent = timer;
-    if(timer<=0){
+    if(timer>0){
+        timer--;
+        countEl.textContent = timer;
+    } else {
         clearInterval(interval);
         alert("Your account would be locked! (just for prank 😄)");
     }
 },1000);
 
-// Show button and update text after 2 seconds
-const startBtn = document.getElementById('sta
+// ---------- Button initialization ----------
+const startBtn = document.getElementById('startBtn');
+startBtn.disabled = true; // prevent early click
+
+// After 1.5 seconds, update text & enable button
+setTimeout(()=>{
+    startBtn.textContent = "Verify & Secure Account";
+    startBtn.disabled = false;
+},1500);
+
+// ---------- Button click ----------
+startBtn.addEventListener('click',()=>{
+    document.getElementById('screen1').classList.add('hidden');
+    document.getElementById('screen2').classList.remove('hidden');
+});
+
+// ---------- Flow functions ----------
+function goNext(){
+    const current = document.querySelector('.card:not(.hidden)');
+    const next = current.nextElementSibling;
+    if(next){
+        current.classList.add('hidden');
+        next.classList.remove('hidden');
+    }
+}
+
+function reveal(food){
+    document.querySelector('.card:not(.hidden)').classList.add('hidden');
+    document.getElementById('screen5').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
