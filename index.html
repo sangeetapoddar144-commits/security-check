@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -14,47 +14,13 @@ h2,h3{margin-top:0}
 .alert{color:#facc15;font-size:14px}
 .line{opacity:0;transition:opacity .6s;margin:10px 0}
 .danger{color:#ff4d4d;font-weight:600}
-
-button{
-  width:100%;
-  padding:14px;
-  margin-top:12px;
-  font-size:15px;
-  font-weight:600;
-  border-radius:6px;
-  border:1px solid #2c3440;
-  background:#1f2937;
-  color:#e5e7eb;
-  cursor:pointer
-}
+button{width:100%;padding:14px;margin-top:12px;font-size:15px;font-weight:600;border-radius:6px;border:1px solid #2c3440;background:linear-gradient(#1f2937,#111827);color:#e5e7eb;cursor:pointer}
 button:active{transform:scale(.97)}
-
-/* ✅DANGER BUTTON */
-.primary{
-  background:#ffffff;
-  color:#d93025;              /* Google red */
-  border:1px solid #d93025;
-  font-weight:500;
-}
-
-.primary:hover{
-  background:#fef1f0;
-}
-
-.primary:active{
-  background:#fde7e5;
-}
-
+.primary{background:linear-gradient(#dc2626,#991b1b);border-color:#7f1d1d}
 .hidden{display:none}
 .small{font-size:12px;color:#9ca3af}
 .shake{animation:shake .4s linear 2}
-@keyframes shake{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-4px)}
-  50%{transform:translateX(4px)}
-  75%{transform:translateX(-4px)}
-  100%{transform:translateX(0)}
-}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
 </style>
 </head>
 <body>
@@ -65,19 +31,17 @@ button:active{transform:scale(.97)}
 <span>Google Account Security</span>
 </div>
 
-<!-- Initial Screen -->
+<!-- Initial Scary Screen -->
 <div class="card" id="screen1">
-<h2>⚠ Security Alert</h2>
-<p class="alert line danger">Automated security review triggered due to unusual access pattern.</p>
+<h2>🚨 Cyber Crime Activity Detected</h2>
+<p class="alert line danger">Unusual login attempt detected seconds ago</p>
 <p class="line">Access attempt blocked by Google Security</p>
 <p class="line">Suspicious device: <strong id="device"></strong></p>
 <p class="line">Detected location: <strong id="region"></strong></p>
-<p class="line danger">Your account is currently under automated monitoring.</p>
+<p class="line danger">Your account is under monitoring by the Automated Threat Intelligence Module (ATM) and Network Breach Detection Engine.
+</p>
 <p class="line">Auto‑lock in <strong><span id="count">60</span>s</strong></p>
-
-<!-- ✅ UPDATED BUTTON TEXT -->
-<button id="verifyBtn" class="primary hidden">CONFIRM THIS WAS YOU</button>
-
+<button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
 <p class="small">Case ID: G‑SEC‑<span id="ref"></span></p>
 </div>
 
@@ -98,48 +62,52 @@ button:active{transform:scale(.97)}
 
 <div class="card hidden">
 <h3>Final Verification</h3>
-<p>What does <strong>Sangeeta</strong> like the most 😎?</p>
+<p>What does <strong>Sangeeta</strong> like the most😎?</p>
 <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
 <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
 <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
 </div>
 
-<!-- Final Reveal -->
+<!-- Final Wholesome Reveal -->
 <div class="card hidden" id="finalReveal">
-<h2>🎉 Gotcha !!!</h2>
+<h2>👻 Gotcha !!!</h2>
 <p id="finalMessage"></p>
 <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
 
 <script>
+// ----- Random Fake Device and Region -----
 const regions=["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
 const devices=["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
 document.getElementById("region").textContent=regions[Math.floor(Math.random()*regions.length)];
 document.getElementById("device").textContent=devices[Math.floor(Math.random()*devices.length)];
 document.getElementById("ref").textContent=Math.floor(100000+Math.random()*900000);
 
+// ----- Timer Countdown -----
 let t=60;
 setInterval(()=>{if(t>0){t--;document.getElementById('count').textContent=t}},1000);
 
+// ----- Line-by-line Reveal -----
 const lines=document.querySelectorAll('.line');
 let i=0;
 function revealLines(){
-  if(i<lines.length){
-    lines[i].style.opacity=1;
-    i++;
-    setTimeout(revealLines,700);
-  } else {
-    setTimeout(()=>verifyBtn.classList.remove('hidden'),1500);
-  }
+  if(i<lines.length){lines[i].style.opacity=1;i++;setTimeout(revealLines,700);} 
+  else {setTimeout(()=>verifyBtn.classList.remove('hidden'),1500);}
 }
 revealLines();
 
+// ----- Sound & Vibration -----
+const beep=new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YRAAAAAA/////w==');
+
+// ----- Verify Button -----
 const verifyBtn=document.getElementById('verifyBtn');
 verifyBtn.onclick=()=>{
+  clearTimeout(autoLock);
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 }
 
+// ----- Navigation Functions -----
 function next(){
   const cur=document.querySelector('.card:not(.hidden)');
   cur.classList.add('hidden');
@@ -148,14 +116,40 @@ function next(){
 
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  document.getElementById('finalMessage').innerHTML=`
+  const msg = 
 😄 Got you!<br><br>
-No alerts. No tracking. Just a New Year surprise 💛<br><br>
-Wishing you a happy, healthy, stress‑free New Year!<br><br>
-And unlimited <strong>${food}</strong> 😋
-  `;
+Take a deep breath — no alerts, no tracking, just harmless fun.<br>
+This little “security breach” was just a New Year surprise from <strong>Sangeeta</strong> 💛<br><br>
+<span style="color:red; font-weight:bold;">Remember:</span> the only thing worth truly tracking is the love and presence of your family.<br><br>
+And you picked <strong>${food}</strong> — may God always provide you a constant supply of it! 😋
+  ;
+  document.getElementById('finalMessage').innerHTML=msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
+
+// ----- Auto-lock if user does not click -----
+const autoLock=setTimeout(()=>{
+  const box=document.getElementById('screen1');
+  if(!box||box.classList.contains('hidden')) return;
+  box.classList.add('shake');
+  let unlockBtn=document.getElementById('unlockBtn');
+  if(!unlockBtn){
+    unlockBtn=document.createElement('button');
+    unlockBtn.id='unlockBtn';
+    unlockBtn.className='primary';
+    unlockBtn.textContent='UNLOCK & VERIFY';
+    unlockBtn.onclick=()=>{
+      box.classList.remove('shake');
+      box.classList.add('hidden');
+      box.nextElementSibling.classList.remove('hidden');
+    };
+    box.appendChild(unlockBtn);
+  }
+  beep.play();
+  if(navigator.vibrate)navigator.vibrate([300,100,300]);
+},8000);
 </script>
 </body>
 </html>
+
+.6s;margin:10px 0}
