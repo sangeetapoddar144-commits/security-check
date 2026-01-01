@@ -33,13 +33,12 @@ button:active{transform:scale(.97)}
 
 <!-- Initial Scary Screen -->
 <div class="card" id="screen1">
-<h2>🚨 Cyber Crime Activity Detected</h2>
-<p class="alert line danger">Unusual login attempt detected seconds ago</p>
+<h2>⚠ Security Alert</h2>
+<p class="alert line danger">Automated security review triggered due to unusual access pattern.</p>
 <p class="line">Access attempt blocked by Google Security</p>
 <p class="line">Suspicious device: <strong id="device"></strong></p>
 <p class="line">Detected location: <strong id="region"></strong></p>
-<p class="line danger">Your account is under monitoring by the Automated Threat Intelligence Module (ATM) and Network Breach Detection Engine.
-</p>
+<p class="line danger">Your account is currently under automated monitoring by the Threat Intelligence Module (TIM).</p>
 <p class="line">Auto‑lock in <strong><span id="count">60</span>s</strong></p>
 <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
 <p class="small">Case ID: G‑SEC‑<span id="ref"></span></p>
@@ -70,7 +69,7 @@ button:active{transform:scale(.97)}
 
 <!-- Final Wholesome Reveal -->
 <div class="card hidden" id="finalReveal">
-<h2>👻 Gotcha !!!</h2>
+<h2>🎉 Gotcha !!!</h2>
 <p id="finalMessage"></p>
 <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
@@ -119,8 +118,8 @@ function reveal(food){
   const msg = `
 😄 Got you!<br><br>
 Take a deep breath — no alerts, no tracking, just harmless fun.<br>
-This little “security breach” was just a New Year surprise from <strong>Sangeeta</strong> 💛<br><br>
-<span style="color:red; font-weight:bold;">Remember:</span> the only thing worth truly tracking is the love and presence of your family.<br><br>
+This little “security review” was just a New Year surprise from <strong>Sangeeta</strong> 💛<br><br>
+<span style="color:green; font-weight:bold;">Remember:</span> the only thing truly important is the love and presence of your family.<br><br>
 And you picked <strong>${food}</strong> — may God always provide you a constant supply of it! 😋
   `;
   document.getElementById('finalMessage').innerHTML=msg;
