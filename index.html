@@ -4,6 +4,29 @@
 <meta charset="UTF-8">
 <title>Google Security Alert | New Year Prank</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- LOCKOUT SCREEN -->
+<div class="card hidden" id="lockoutScreen">
+  <h2 style="color:#ff4d4d;">Account Temporarily Locked</h2>
+  <p class="danger">
+    Multiple unauthorized sign-in attempts detected and ignored.
+  </p>
+  <p>
+    Your Google Account has been <strong>temporarily restricted</strong>
+    to prevent further compromise.
+  </p>
+  <p class="danger">
+    • Sign-in disabled<br>
+    • Active sessions frozen<br>
+    • Security team notified
+  </p>
+  <button class="primary" onclick="forceVerify()">
+    CONTINUE VERIFICATION
+  </button>
+  <p class="small">
+    Lockout ID: G-LOCK-<span id="lockRef"></span>
+  </p>
+</div>
+
 <style>
 body{
   margin:0;
