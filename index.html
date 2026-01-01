@@ -4,28 +4,6 @@
 <meta charset="UTF-8">
 <title>Google Security Alert | New Year Prank</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- LOCKOUT SCREEN -->
-<div class="card hidden" id="lockoutScreen">
-  <h2 style="color:#ff4d4d;">Account Temporarily Locked</h2>
-  <p class="danger">
-    Multiple unauthorized sign-in attempts detected and ignored.
-  </p>
-  <p>
-    Your Google Account has been <strong>temporarily restricted</strong>
-    to prevent further compromise.
-  </p>
-  <p class="danger">
-    • Sign-in disabled<br>
-    • Active sessions frozen<br>
-    • Security team notified
-  </p>
-  <button class="primary" onclick="forceVerify()">
-    CONTINUE VERIFICATION
-  </button>
-  <p class="small">
-    Lockout ID: G-LOCK-<span id="lockRef"></span>
-  </p>
-</div>
 
 <style>
 body{
@@ -78,6 +56,7 @@ button:active{transform:scale(.97)}
 }
 .hidden{display:none}
 .small{font-size:12px;color:#9ca3af}
+
 .shake{animation:shake .4s linear 2}
 @keyframes shake{
   0%{transform:translateX(0)}
@@ -88,64 +67,68 @@ button:active{transform:scale(.97)}
 }
 </style>
 </head>
+
 <body>
 
 <!-- Fake Google Header -->
 <div class="header">
-<img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png">
-<span>Google Account Security</span>
+  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png">
+  <span>Google Account Security</span>
 </div>
 
-<!-- Initial Scary Screen -->
+<!-- MAIN SECURITY CARD -->
 <div class="card" id="screen1">
-<h2>Security Alert</h2>
-<p class="alert line danger">Unusual sign-in attempt detected</p>
-<p class="line">Access attempt blocked by Google Security</p>
-<p class="line">Suspicious device: <strong id="device"></strong></p>
-<p class="line">Detected location: <strong id="region"></strong></p>
-<p class="line danger">
-Your account is under monitoring by Automated Threat Intelligence
-</p>
-<p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
-<button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
-<p class="small">Case ID: G-SEC-<span id="ref"></span></p>
+  <h2>Security Alert</h2>
+  <p class="alert line danger">Unusual sign-in attempt detected</p>
+  <p class="line">Access attempt blocked by Google Security</p>
+  <p class="line">Suspicious device: <strong id="device"></strong></p>
+  <p class="line">Detected location: <strong id="region"></strong></p>
+  <p class="line danger">
+    Your account is under monitoring by Automated Threat Intelligence
+  </p>
+  <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
+
+  <button id="verifyBtn" class="primary hidden">
+    VERIFY & SECURE ACCOUNT
+  </button>
+
+  <p class="small">Case ID: G-SEC-<span id="ref"></span></p>
 </div>
 
-<!-- Security Questions -->
+<!-- SECURITY QUESTIONS -->
 <div class="card hidden">
-<h3>Security Check: 1/3</h3>
-<p>Did you recently install any unknown app or file?</p>
-<button onclick="next()">Yes</button>
-<button onclick="next()">No</button>
-<button onclick="next()">Not sure</button>
-</div>
-
-<div class="card hidden">
-<p>Is this device associated with your account?</p>
-<button onclick="next()">Yes</button>
-<button onclick="next()">No</button>
+  <h3>Security Check: 1/3</h3>
+  <p>Did you recently install any unknown app or file?</p>
+  <button onclick="next()">Yes</button>
+  <button onclick="next()">No</button>
+  <button onclick="next()">Not sure</button>
 </div>
 
 <div class="card hidden">
-<h3>Final Verification</h3>
-<p>What is your favourite food?</p>
-<button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
-<button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
-<button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
+  <p>Is this device associated with your account?</p>
+  <button onclick="next()">Yes</button>
+  <button onclick="next()">No</button>
 </div>
 
-<!-- Final Reveal -->
+<div class="card hidden">
+  <h3>Final Verification</h3>
+  <p>What is your favourite food?</p>
+  <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
+  <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
+  <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
+</div>
+
+<!-- FINAL REVEAL -->
 <div class="card hidden" id="finalReveal">
-<h2>👻 Gotcha !!!</h2>
-<p id="finalMessage"></p>
-<p>— With love, <strong>Sangeeta</strong> 💛</p>
+  <h2>👻 Gotcha !!!</h2>
+  <p id="finalMessage"></p>
+  <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
+
 <script>
-/* ------------------ INIT ------------------ */
+/* ---------------- INIT ---------------- */
 const screen1 = document.getElementById('screen1');
 const verifyBtn = document.getElementById('verifyBtn');
-const lockoutScreen = document.getElementById('lockoutScreen');
-
 let handled = false;
 
 /* Fake data */
@@ -158,19 +141,17 @@ document.getElementById("device").textContent =
   devices[Math.floor(Math.random()*devices.length)];
 document.getElementById("ref").textContent =
   Math.floor(100000 + Math.random()*900000);
-document.getElementById("lockRef").textContent =
-  Math.floor(100000 + Math.random()*900000);
 
-/* ------------------ COUNTDOWN ------------------ */
+/* Countdown */
 let t = 60;
-const timer = setInterval(() => {
-  if (t > 0) {
+setInterval(()=>{
+  if(t > 0){
     t--;
     document.getElementById('count').textContent = t;
   }
-}, 1000);
+},1000);
 
-/* ------------------ LINE REVEAL ------------------ */
+/* Reveal lines */
 const lines = document.querySelectorAll('.line');
 let i = 0;
 (function revealLines(){
@@ -181,44 +162,33 @@ let i = 0;
   }
 })();
 
-/* ------------------ SOUND + VIBRATION ------------------ */
+/* Sound + vibration */
 const beep = new Audio(
-  'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
+ 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
 );
-
 function alertUser(pattern){
   beep.play().catch(()=>{});
   if(navigator.vibrate) navigator.vibrate(pattern);
 }
 
-/* ------------------ ESCALATION ------------------ */
-
-/* 7s – show verify */
-setTimeout(() => {
+/* 7s escalation */
+setTimeout(()=>{
   if(handled) return;
   verifyBtn.classList.remove('hidden');
   screen1.classList.add('shake');
   alertUser([200,100,200]);
-}, 7000);
+},7000);
 
-/* 10s – HARD LOCKOUT */
-setTimeout(() => {
+/* 10s HARD LOCKOUT (same card) */
+setTimeout(()=>{
   if(handled) return;
 
   alertUser([600,200,600,200,600]);
 
-  /* 10s – HARD LOCKOUT (overlay style) */
-setTimeout(() => {
-  if(handled) return;
-
-  alertUser([600,200,600,200,600]);
-
-  // Disable button interaction
   verifyBtn.disabled = true;
   verifyBtn.textContent = 'ACCOUNT LOCKED';
   verifyBtn.style.opacity = '0.6';
 
-  // Inject lockout warning
   const lockMsg = document.createElement('div');
   lockMsg.style.marginTop = '16px';
   lockMsg.style.padding = '12px';
@@ -236,59 +206,36 @@ setTimeout(() => {
     </p>
   `;
   screen1.appendChild(lockMsg);
-}, 10000);
+},10000);
 
-  lockoutScreen.classList.remove('hidden');
-}, 10000);
-
-/* ------------------ VERIFY ------------------ */
-verifyBtn.onclick = () => {
+/* Verify click */
+verifyBtn.onclick = ()=>{
   handled = true;
-  clearInterval(timer);
   alertUser([300,100,300]);
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 };
 
-/* ------------------ LOCKOUT VERIFY ------------------ */
-function forceVerify(){
-  handled = true;
-  alertUser([300,100,300]);
-  lockoutScreen.classList.add('hidden');
-  screen1.nextElementSibling.classList.remove('hidden');
-}
-
-/* ------------------ QUESTION FLOW ------------------ */
+/* Navigation */
 function next(){
   const cur = document.querySelector('.card:not(.hidden)');
   cur.classList.add('hidden');
   cur.nextElementSibling.classList.remove('hidden');
 }
 
-/* ------------------ FINAL REVEAL ------------------ */
+/* Final reveal */
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-
-  const msg = `
+  document.getElementById('finalMessage').innerHTML = `
 😄 Got you!<br><br>
-Take a deep breath — no alerts, no tracking, just harmless fun.<br>
-This little “security breach” was just a New Year surprise from
-<strong>Sangeeta</strong> 💛<br><br>
-
-<span style="color:red;font-weight:bold;">
-REMEMBER:
-</span>
-the only thing worth truly tracking is the love and presence of your family.<br><br>
-
-May God always provide you a constant supply of <strong>${food}<strong> and unlimites smiles!! 😋
+No alerts. No tracking. Just love and a New Year surprise 💛<br><br>
+<span style="color:red;font-weight:bold;">REMEMBER:</span>
+family and smiles matter most.<br><br>
+May God always bless you with unlimited <strong>${food}</strong> and happiness 😋
 `;
-
-  document.getElementById('finalMessage').innerHTML = msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
 </script>
-
-
 
 </body>
 </html>
