@@ -144,6 +144,9 @@ Your account is under monitoring by Automated Threat Intelligence
 /* ------------------ INIT ------------------ */
 const screen1 = document.getElementById('screen1');
 const verifyBtn = document.getElementById('verifyBtn');
+const lockoutScreen = document.getElementById('lockoutScreen');
+
+let handled = false;
 
 /* Fake data */
 const regions = ["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
@@ -154,6 +157,8 @@ document.getElementById("region").textContent =
 document.getElementById("device").textContent =
   devices[Math.floor(Math.random()*devices.length)];
 document.getElementById("ref").textContent =
+  Math.floor(100000 + Math.random()*900000);
+document.getElementById("lockRef").textContent =
   Math.floor(100000 + Math.random()*900000);
 
 /* ------------------ COUNTDOWN ------------------ */
@@ -181,55 +186,47 @@ const beep = new Audio(
   'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
 );
 
-function vibrate(pattern){
+function alertUser(pattern){
   beep.play().catch(()=>{});
   if(navigator.vibrate) navigator.vibrate(pattern);
 }
 
-/* ------------------ ESCALATION LEVELS ------------------ */
-let handled = false;
+/* ------------------ ESCALATION ------------------ */
 
-/* Level 1 – soft warning */
+/* 7s – show verify */
 setTimeout(() => {
   if(handled) return;
   verifyBtn.classList.remove('hidden');
   screen1.classList.add('shake');
-  vibrate([200,100,200]);
+  alertUser([200,100,200]);
 }, 7000);
 
-/* Level 2 – serious warning */
+/* 10s – HARD LOCKOUT */
 setTimeout(() => {
   if(handled) return;
-  vibrate([400,150,400,150,400]);
 
-  const warn = document.createElement('p');
-  warn.className = 'danger';
-  warn.textContent = 'Multiple unauthorized requests detected. Immediate action recommended.';
-  screen1.appendChild(warn);
-}, 15000);
+  alertUser([600,200,600,200,600]);
 
-/* Level 3 – critical warning */
-setTimeout(() => {
-  if(handled) return;
-  screen1.classList.add('shake');
-  vibrate([600,200,600,200,600]);
+  screen1.classList.add('hidden');
+  lockoutScreen.classList.remove('hidden');
+}, 10000);
 
-  const critical = document.createElement('p');
-  critical.className = 'danger';
-  critical.style.color = '#ff0000';
-  critical.style.fontWeight = '700';
-  critical.textContent = 'Account suspension imminent due to continued inactivity.';
-  screen1.appendChild(critical);
-}, 25000);
-
-/* ------------------ VERIFY CLICK ------------------ */
+/* ------------------ VERIFY ------------------ */
 verifyBtn.onclick = () => {
   handled = true;
   clearInterval(timer);
-  vibrate([300,100,300]);
+  alertUser([300,100,300]);
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 };
+
+/* ------------------ LOCKOUT VERIFY ------------------ */
+function forceVerify(){
+  handled = true;
+  alertUser([300,100,300]);
+  lockoutScreen.classList.add('hidden');
+  screen1.nextElementSibling.classList.remove('hidden');
+}
 
 /* ------------------ QUESTION FLOW ------------------ */
 function next(){
@@ -253,13 +250,14 @@ REMEMBER:
 </span>
 the only thing worth truly tracking is the love and presence of your family.<br><br>
 
-May God always provide you a constant supply of <strong>${food}</strong> and endless smiles!! 😋
+May God always provide you a constant supply of <strong>${food}<strong> and unlimites smiles!! 😋
 `;
 
   document.getElementById('finalMessage').innerHTML = msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
 </script>
+
 
 
 </body>
