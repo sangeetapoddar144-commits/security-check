@@ -119,6 +119,9 @@ Your account is under monitoring by Automated Threat Intelligence
 </div>
 
 <script>
+const screen1 = document.getElementById('screen1');
+
+// Fake data
 const regions=["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
 const devices=["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
 
@@ -129,6 +132,7 @@ document.getElementById("device").textContent =
 document.getElementById("ref").textContent =
   Math.floor(100000+Math.random()*900000);
 
+// Countdown
 let t=60;
 setInterval(()=>{
   if(t>0){
@@ -137,6 +141,7 @@ setInterval(()=>{
   }
 },1000);
 
+// Reveal lines
 const lines=document.querySelectorAll('.line');
 let i=0;
 function revealLines(){
@@ -150,18 +155,21 @@ function revealLines(){
 }
 revealLines();
 
+// Verify button
 const verifyBtn=document.getElementById('verifyBtn');
 verifyBtn.onclick=()=>{
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 };
 
+// Navigation
 function next(){
   const cur=document.querySelector('.card:not(.hidden)');
   cur.classList.add('hidden');
   cur.nextElementSibling.classList.remove('hidden');
 }
 
+// Final reveal
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
 
@@ -176,7 +184,7 @@ REMEMBER:
 </span>
 the only thing worth truly tracking is the love and presence of your family.<br><br>
 
-May God always provide you a constant supply of <strong>${food}</strong> and endless smiles! 😋
+And you picked <strong>${food}</strong> — may God always provide you a constant supply of it! 😋
 `;
 
   document.getElementById('finalMessage').innerHTML=msg;
