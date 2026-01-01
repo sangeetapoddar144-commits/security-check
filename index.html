@@ -7,21 +7,21 @@
 <style>
 body { font-family: Arial,sans-serif; background:#0b0f14; color:#fff; text-align:center; padding:20px; }
 .card { background:#131a22; border-radius:10px; padding:20px; max-width:420px; margin:auto; margin-top:40px; }
-button { background:#e63946; color:white; border:none; padding:14px; font-size:16px; border-radius:6px; width:100%; cursor:pointer; }
-button:active{ transform:scale(0.98);}
+button { background:#e63946; color:white; border:none; padding:14px; font-size:16px; border-radius:6px; width:100%; cursor:pointer; display:none; }
 .hidden{ display:none;}
-.alert{ color:#ffb703; font-size:14px; }
+.alert{ color:#ffb703; font-size:14px; margin-bottom:10px; }
+.line{opacity:0; transition:opacity 0.5s;}
 </style>
 </head>
 <body>
 
 <div class="card" id="screen1">
   <h2>⚠ Unusual Login Detected</h2>
-  <p class="alert">Detected <strong>few seconds ago</strong></p>
-  <p>Location: <strong><span id="region"></span></strong><br>
-     Device: <strong><span id="device"></span></strong></p>
-  <p>Auto-lock in <span id="count">60</span>s</p>
-  <button id="startBtn">Initializing…</button>
+  <p class="alert line">Detected few seconds ago</p>
+  <p class="line">Location: <strong><span id="region"></span></strong></p>
+  <p class="line">Device: <strong><span id="device"></span></strong></p>
+  <p class="line">Auto-lock in <span id="count">60</span>s</p>
+  <button id="startBtn">Verify & Secure Account</button>
 </div>
 
 <div class="card hidden" id="screen2">
@@ -73,36 +73,25 @@ const interval = setInterval(()=>{
     }
 },1000);
 
-// ---------- Button initialization ----------
+// ---------- Type-in / line by line effect ----------
+const lines = document.querySelectorAll('#screen1 .line');
 const startBtn = document.getElementById('startBtn');
-startBtn.disabled = true; // prevent early click
+let i=0;
 
-// After 1.5 seconds, update text & enable button
-setTimeout(()=>{
-    startBtn.textContent = "Verify & Secure Account";
-    startBtn.disabled = false;
-},1500);
-
-// ---------- Button click ----------
-startBtn.addEventListener('click',()=>{
-    document.getElementById('screen1').classList.add('hidden');
-    document.getElementById('screen2').classList.remove('hidden');
-});
-
-// ---------- Flow functions ----------
-function goNext(){
-    const current = document.querySelector('.card:not(.hidden)');
-    const next = current.nextElementSibling;
-    if(next){
-        current.classList.add('hidden');
-        next.classList.remove('hidden');
+function showLine(){
+    if(i<lines.length){
+        lines[i].style.opacity=1;
+        i++;
+        setTimeout(showLine,800); // delay between lines
+    } else {
+        // after all lines shown, show the button after 1.5s
+        setTimeout(()=>{ startBtn.style.display='block'; },1500);
     }
 }
 
-function reveal(food){
-    document.querySelector('.card:not(.hidden)').classList.add('hidden');
-    document.getElementById('screen5').classList.remove('hidden');
-}
-</script>
-</body>
-</html>
+// start the typing effect immediately
+showLine();
+
+// ---------- Button click ----------
+startBtn.addEventListener('click',()=>{
+    document.getElementById('screen1').classLi
