@@ -2,96 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Account Verification</title>
+<title>Security Alert</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body { font-family: Arial,sans-serif; background:#0b0f14; color:#fff; text-align:center; padding:20px; }
-.card { background:#131a22; border-radius:10px; padding:20px; max-width:420px; margin:auto; margin-top:40px; }
-button { background:#e63946; color:white; border:none; padding:14px; font-size:16px; border-radius:6px; width:100%; cursor:pointer; display:none; }
-.hidden{ display:none;}
-.alert{ color:#ffb703; font-size:14px; margin-bottom:10px; }
-.line{opacity:0; transition:opacity 0.5s;}
+body{
+  margin:0;
+  background:#0b0f14;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  color:#eaeaea;
+}
+.card{
+  max-width:420px;
+  margin:40px auto;
+  background:#121821;
+  border-radius:12px;
+  padding:22px;
+  box-shadow:0 0 30px rgba(255,0,0,0.15);
+}
+h2,h3{margin-top:0}
+.alert{
+  color:#ffb703;
+  font-size:14px;
+  margin-bottom:10px;
+}
+.line{
+  opacity:0;
+  transition:opacity .6s;
+  margin:10px 0;
+}
+.danger{
+  color:#ff4d4d;
+  font-weight:600;
+}
+button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  font-size:15px;
+  font-weight:600;
+  border-radius:6px;
+  border:1px solid #2c3440;
+  background:linear-gradient(#1f2937,#111827);
+  color:#e5e7eb;
+  cursor:pointer;
+}
+button:active{transform:scale(.98)}
+.primary{
+  background:linear-gradient(#dc2626,#991b1b);
+  border-color:#7f1d1d;
+}
+.hidden{display:none}
+.small{font-size:13px;color:#9ca3af}
 </style>
 </head>
+
 <body>
 
+<!-- SCREEN 1 -->
 <div class="card" id="screen1">
-  <h2>⚠ Unusual Login Detected</h2>
-  <p class="alert line">Detected few seconds ago</p>
-  <p class="line">Location: <strong><span id="region"></span></strong></p>
-  <p class="line">Device: <strong><span id="device"></span></strong></p>
-  <p class="line">Auto-lock in <span id="count">60</span>s</p>
-  <button id="startBtn">Verify & Secure Account</button>
+  <h2>🚨 Cyber Crime Alert</h2>
+
+  <p class="alert line danger">Suspicious activity detected from your account</p>
+  <p class="line">Unauthorized device attempted login <strong>few seconds ago</strong></p>
+  <p class="line">Device: <strong id="device"></strong></p>
+  <p class="line">Location: <strong id="region"></strong></p>
+  <p class="line danger">Account flagged for abnormal behavior</p>
+  <p class="line">Auto‑lock in <strong><span id="count">60</span>s</strong></p>
+
+  <button id="verifyBtn" class="primary" style="display:none">
+    VERIFY & SECURE ACCOUNT
+  </button>
+
+  <p class="small">Security Reference ID: SC‑<span id="ref"></span></p>
 </div>
 
-<div class="card hidden" id="screen2">
+<!-- SCREEN 2 -->
+<div class="card hidden">
   <h3>Security Check 1/3</h3>
-  <p>When did you last unlock your phone?</p>
-  <button onclick="goNext()">Within last 5 minutes</button>
-  <button onclick="goNext()">10–30 minutes ago</button>
-  <button onclick="goNext()">More than 1 hour ago</button>
+  <p>Was your phone unlocked recently?</p>
+  <button onclick="next()">Yes, just now</button>
+  <button onclick="next()">A while ago</button>
+  <button onclick="next()">Not sure</button>
 </div>
 
-<div class="card hidden" id="screen3">
+<!-- SCREEN 3 -->
+<div class="card hidden">
   <h3>Security Check 2/3</h3>
-  <p>Do you recognize this device?</p>
-  <button onclick="goNext()">Yes</button>
-  <button onclick="goNext()">No</button>
+  <p>Do you recognize the detected device?</p>
+  <button onclick="next()">Yes</button>
+  <button onclick="next()">No</button>
 </div>
 
-<div class="card hidden" id="screen4">
-  <h3>Final Check</h3>
+<!-- SCREEN 4 -->
+<div class="card hidden">
+  <h3>Final Verification</h3>
   <p>What does <strong>Sangeeta</strong> like the most?</p>
-  <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
-  <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
-  <button onclick="reveal('Desserts 🍫')">Desserts 🍫</button>
+  <button onclick="reveal()">Pizza 🍕</button>
+  <button onclick="reveal()">Biryani 🍗</button>
+  <button onclick="reveal()">Desserts 🍫</button>
 </div>
 
-<div class="card hidden" id="screen5">
-  <h2>🎉 Surprise!</h2>
-  <p>Relax 😄<br><br>This was a New Year wish from <strong>Sangeeta</strong> 💫</p>
-  <p>Happy New Year! 🥳</p>
+<!-- SCREEN 5 -->
+<div class="card hidden">
+  <h2>😄 Got You!</h2>
+  <p>This was a New Year prank by <strong>Sangeeta</strong> 💫</p>
+  <p>Wishing you a safe, happy & secure New Year 🎉</p>
 </div>
 
 <script>
-// ---------- Random region/device ----------
-const regions = ['Amsterdam, NL','Berlin, DE','London, UK','Singapore, SG'];
-const devices = ['Samsung Galaxy S21','iPhone 12','Pixel 6','OnePlus Nord'];
-document.getElementById('region').textContent = regions[Math.floor(Math.random()*regions.length)];
-document.getElementById('device').textContent = devices[Math.floor(Math.random()*devices.length)];
+// Random data
+const regions=["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
+const devices=["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
+document.getElementById("region").textContent=regions[Math.floor(Math.random()*regions.length)];
+document.getElementById("device").textContent=devices[Math.floor(Math.random()*devices.length)];
+document.getElementById("ref").textContent=Math.floor(100000+Math.random()*900000);
 
-// ---------- Countdown timer ----------
-let timer = 60;
-const countEl = document.getElementById('count');
-const interval = setInterval(()=>{
-    if(timer>0){
-        timer--;
-        countEl.textContent = timer;
-    } else {
-        clearInterval(interval);
-        alert("Your account would be locked! (just for prank 😄)");
-    }
-},1000);
+// Countdown
+let t=60;
+const c=document.getElementById("count");
+setInterval(()=>{if(t>0){t--;c.textContent=t}},1000);
 
-// ---------- Type-in / line by line effect ----------
-const lines = document.querySelectorAll('#screen1 .line');
-const startBtn = document.getElementById('startBtn');
+// Line-by-line reveal
+const lines=document.querySelectorAll(".line");
 let i=0;
+function showLines(){
+  if(i<lines.length){
+    lines[i].style.opacity=1;
+    i++;
+    setTimeout(showLines,700);
+  }else{
+    setTimeout(()=>document.getElementById("verifyBtn").style.display="block",1500);
+  }
+}
+showLines();
 
-function showLine(){
-    if(i<lines.length){
-        lines[i].style.opacity=1;
-        i++;
-        setTimeout(showLine,800); // delay between lines
-    } else {
-        // after all lines shown, show the button after 1.5s
-        setTimeout(()=>{ startBtn.style.display='block'; },1500);
-    }
+// Button flow
+document.getElementById("verifyBtn").onclick=()=>{
+  screen1.classList.add("hidden");
+  screen1.nextElementSibling.classList.remove("hidden");
+};
+
+function next(){
+  const cur=document.querySelector(".card:not(.hidden)");
+  cur.classList.add("hidden");
+  cur.nextElementSibling.classList.remove("hidden");
 }
 
-// start the typing effect immediately
-showLine();
+function reveal(){
+  document.querySelector(".card:not(.hidden)").classList.add("hidden");
+  document.querySelectorAll(".card")[4].classList.remove("hidden");
+}
+</script>
 
-// ---------- Button click ----------
-startBtn.addEventListener('click',()=>{
-    document.getElementById('screen1').classLi
+</body>
+</html>
