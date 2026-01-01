@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Security Alert</title>
+<title>Google Security Alert</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -12,84 +12,77 @@ body{
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
   color:#eaeaea;
 }
+.header{
+  background:#111827;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border-bottom:1px solid #1f2937;
+}
+.header img{width:22px;height:22px}
+.header span{font-size:14px;color:#e5e7eb}
 .card{
   max-width:420px;
-  margin:40px auto;
+  margin:20px auto;
   background:#121821;
   border-radius:12px;
   padding:22px;
-  box-shadow:0 0 30px rgba(255,0,0,0.15);
+  box-shadow:0 0 35px rgba(255,0,0,0.2);
 }
 h2,h3{margin-top:0}
-.alert{
-  color:#ffb703;
-  font-size:14px;
-  margin-bottom:10px;
-}
-.line{
-  opacity:0;
-  transition:opacity .6s;
-  margin:10px 0;
-}
-.danger{
-  color:#ff4d4d;
-  font-weight:600;
-}
+.alert{color:#facc15;font-size:14px}
+.line{opacity:0;transition:opacity .6s;margin:10px 0}
+.danger{color:#ff4d4d;font-weight:600}
 button{
-  width:100%;
-  padding:14px;
-  margin-top:12px;
-  font-size:15px;
-  font-weight:600;
-  border-radius:6px;
-  border:1px solid #2c3440;
-  background:linear-gradient(#1f2937,#111827);
-  color:#e5e7eb;
-  cursor:pointer;
+  width:100%;padding:14px;margin-top:12px;font-size:15px;font-weight:600;
+  border-radius:6px;border:1px solid #2c3440;
+  background:linear-gradient(#1f2937,#111827);color:#e5e7eb;cursor:pointer
 }
-button:active{transform:scale(.98)}
-.primary{
-  background:linear-gradient(#dc2626,#991b1b);
-  border-color:#7f1d1d;
-}
+button:active{transform:scale(.97)}
+.primary{background:linear-gradient(#dc2626,#991b1b);border-color:#7f1d1d}
 .hidden{display:none}
-.small{font-size:13px;color:#9ca3af}
+.small{font-size:12px;color:#9ca3af}
+.shake{animation:shake .4s linear 2}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
 </style>
 </head>
-
 <body>
+
+<div class="header">
+  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png">
+  <span>Google Account Security</span>
+</div>
 
 <!-- SCREEN 1 -->
 <div class="card" id="screen1">
-  <h2>🚨 Cyber Crime Alert</h2>
+  <h2>🚨 Cyber Crime Activity Detected</h2>
 
-  <p class="alert line danger">Suspicious activity detected from your account</p>
-  <p class="line">Unauthorized device attempted login <strong>few seconds ago</strong></p>
-  <p class="line">Device: <strong id="device"></strong></p>
-  <p class="line">Location: <strong id="region"></strong></p>
-  <p class="line danger">Account flagged for abnormal behavior</p>
+  <p class="alert line danger">Unusual login attempt detected seconds ago</p>
+  <p class="line">Access attempt blocked by Google Security</p>
+  <p class="line">Suspicious device: <strong id="device"></strong></p>
+  <p class="line">Detected location: <strong id="region"></strong></p>
+  <p class="line danger">Your account is under monitoring by cyber crime systems</p>
   <p class="line">Auto‑lock in <strong><span id="count">60</span>s</strong></p>
 
-  <button id="verifyBtn" class="primary" style="display:none">
-    VERIFY & SECURE ACCOUNT
-  </button>
+  <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
 
-  <p class="small">Security Reference ID: SC‑<span id="ref"></span></p>
+  <p class="small">Case ID: G‑SEC‑<span id="ref"></span></p>
 </div>
 
 <!-- SCREEN 2 -->
 <div class="card hidden">
   <h3>Security Check 1/3</h3>
-  <p>Was your phone unlocked recently?</p>
-  <button onclick="next()">Yes, just now</button>
-  <button onclick="next()">A while ago</button>
+  <p>Did you recently install any unknown app or file?</p>
+  <button onclick="next()">Yes</button>
+  <button onclick="next()">No</button>
   <button onclick="next()">Not sure</button>
 </div>
 
 <!-- SCREEN 3 -->
 <div class="card hidden">
   <h3>Security Check 2/3</h3>
-  <p>Do you recognize the detected device?</p>
+  <p>Is this device associated with your account?</p>
   <button onclick="next()">Yes</button>
   <button onclick="next()">No</button>
 </div>
@@ -98,60 +91,51 @@ button:active{transform:scale(.98)}
 <div class="card hidden">
   <h3>Final Verification</h3>
   <p>What does <strong>Sangeeta</strong> like the most?</p>
-  <button onclick="reveal()">Pizza 🍕</button>
   <button onclick="reveal()">Biryani 🍗</button>
-  <button onclick="reveal()">Desserts 🍫</button>
+  <button onclick="reveal()">Pizza 🍕</button>
+  <button onclick="reveal()">Chocolate 🍫</button>
 </div>
 
 <!-- SCREEN 5 -->
 <div class="card hidden">
   <h2>😄 Got You!</h2>
-  <p>This was a New Year prank by <strong>Sangeeta</strong> 💫</p>
-  <p>Wishing you a safe, happy & secure New Year 🎉</p>
+  <p>This was a harmless New Year prank by <strong>Sangeeta</strong>.</p>
+  <p>No data was collected. Stay safe & Happy New Year 🎉</p>
 </div>
 
 <script>
-// Random data
 const regions=["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
 const devices=["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
+
 document.getElementById("region").textContent=regions[Math.floor(Math.random()*regions.length)];
 document.getElementById("device").textContent=devices[Math.floor(Math.random()*devices.length)];
 document.getElementById("ref").textContent=Math.floor(100000+Math.random()*900000);
 
-// Countdown
-let t=60;
-const c=document.getElementById("count");
-setInterval(()=>{if(t>0){t--;c.textContent=t}},1000);
+// countdown
+let t=60;setInterval(()=>{if(t>0){t--;count.textContent=t}},1000);
 
-// Line-by-line reveal
-const lines=document.querySelectorAll(".line");
-let i=0;
-function showLines(){
-  if(i<lines.length){
-    lines[i].style.opacity=1;
-    i++;
-    setTimeout(showLines,700);
-  }else{
-    setTimeout(()=>document.getElementById("verifyBtn").style.display="block",1500);
-  }
+// line-by-line reveal
+const lines=document.querySelectorAll('.line');let i=0;
+function revealLines(){
+  if(i<lines.length){lines[i].style.opacity=1;i++;setTimeout(revealLines,700);} 
+  else{setTimeout(()=>verifyBtn.classList.remove('hidden'),1500)}
 }
-showLines();
+revealLines();
 
-// Button flow
-document.getElementById("verifyBtn").onclick=()=>{
-  screen1.classList.add("hidden");
-  screen1.nextElementSibling.classList.remove("hidden");
-};
+verifyBtn.onclick=()=>{
+  screen1.classList.add('hidden');
+  screen1.nextElementSibling.classList.remove('hidden');
+}
 
 function next(){
-  const cur=document.querySelector(".card:not(.hidden)");
-  cur.classList.add("hidden");
-  cur.nextElementSibling.classList.remove("hidden");
+  const cur=document.querySelector('.card:not(.hidden)');
+  cur.classList.add('hidden');
+  cur.nextElementSibling.classList.remove('hidden');
 }
 
 function reveal(){
-  document.querySelector(".card:not(.hidden)").classList.add("hidden");
-  document.querySelectorAll(".card")[4].classList.remove("hidden");
+  document.querySelector('.card:not(.hidden)').classList.add('hidden');
+  document.querySelectorAll('.card')[4].classList.remove('hidden');
 }
 </script>
 
