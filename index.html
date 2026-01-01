@@ -122,7 +122,7 @@ Your account is under monitoring by Automated Threat Intelligence
 const screen1 = document.getElementById('screen1');
 const verifyBtn = document.getElementById('verifyBtn');
 
-/* Fake SOC data */
+/* Fake data */
 const regions = ["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
 const devices = ["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
 
@@ -142,58 +142,81 @@ const timer = setInterval(() => {
   }
 }, 1000);
 
-/* ------------------ LINE BY LINE REVEAL ------------------ */
+/* ------------------ LINE REVEAL ------------------ */
 const lines = document.querySelectorAll('.line');
 let i = 0;
-
-function revealLines() {
-  if (i < lines.length) {
+(function revealLines(){
+  if(i < lines.length){
     lines[i].style.opacity = 1;
     i++;
     setTimeout(revealLines, 700);
   }
-}
-revealLines();
+})();
 
-/* ------------------ BEEP + VIBRATION ------------------ */
+/* ------------------ SOUND + VIBRATION ------------------ */
 const beep = new Audio(
   'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
 );
 
-function alertUser() {
+function vibrate(pattern){
   beep.play().catch(()=>{});
-  if (navigator.vibrate) {
-    navigator.vibrate([300,150,300]);
-  }
+  if(navigator.vibrate) navigator.vibrate(pattern);
 }
 
-/* ------------------ AUTO ESCALATION ------------------ */
-/* If user does nothing */
+/* ------------------ ESCALATION LEVELS ------------------ */
+let handled = false;
+
+/* Level 1 – soft warning */
 setTimeout(() => {
-  if (!screen1.classList.contains('hidden')) {
-    screen1.classList.add('shake');
-    verifyBtn.classList.remove('hidden');
-    alertUser();
-  }
+  if(handled) return;
+  verifyBtn.classList.remove('hidden');
+  screen1.classList.add('shake');
+  vibrate([200,100,200]);
 }, 7000);
 
-/* ------------------ VERIFY BUTTON ------------------ */
+/* Level 2 – serious warning */
+setTimeout(() => {
+  if(handled) return;
+  vibrate([400,150,400,150,400]);
+
+  const warn = document.createElement('p');
+  warn.className = 'danger';
+  warn.textContent = 'Multiple unauthorized requests detected. Immediate action recommended.';
+  screen1.appendChild(warn);
+}, 15000);
+
+/* Level 3 – critical warning */
+setTimeout(() => {
+  if(handled) return;
+  screen1.classList.add('shake');
+  vibrate([600,200,600,200,600]);
+
+  const critical = document.createElement('p');
+  critical.className = 'danger';
+  critical.style.color = '#ff0000';
+  critical.style.fontWeight = '700';
+  critical.textContent = 'Account suspension imminent due to continued inactivity.';
+  screen1.appendChild(critical);
+}, 25000);
+
+/* ------------------ VERIFY CLICK ------------------ */
 verifyBtn.onclick = () => {
+  handled = true;
   clearInterval(timer);
-  alertUser();                // beep even on click (realistic)
+  vibrate([300,100,300]);
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 };
 
 /* ------------------ QUESTION FLOW ------------------ */
-function next() {
+function next(){
   const cur = document.querySelector('.card:not(.hidden)');
   cur.classList.add('hidden');
   cur.nextElementSibling.classList.remove('hidden');
 }
 
 /* ------------------ FINAL REVEAL ------------------ */
-function reveal(food) {
+function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
 
   const msg = `
@@ -205,14 +228,16 @@ This little “security breach” was just a New Year surprise from
 <span style="color:red;font-weight:bold;">
 REMEMBER:
 </span>
-the only thing worth truly tracking is the love and presence of your family and your closed ones.<br><br>
+the only thing worth truly tracking is the love and presence of your family.<br><br>
 
-May God always provide you a constant supply of ${food} and unlimited smiles!! 😋
-  `;
+May God always provide you a constant supply of <strong>${food}</strong> and endless smiles!! 😋
+`;
 
   document.getElementById('finalMessage').innerHTML = msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
 </script>
+
+
 </body>
 </html>
