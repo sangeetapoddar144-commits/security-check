@@ -122,7 +122,22 @@ function revealLines(){
 }
 revealLines();
 
+// auto-lock escalation if user does NOT click verify
+const autoLock = setTimeout(()=>{
+  const box = document.getElementById('screen1');
+  if(!box || box.classList.contains('hidden')) return;
+  box.classList.add('shake');
+  box.innerHTML = `
+    <h2>🔒 Account Temporarily Locked</h2>
+    <p class="danger">No response detected.</p>
+    <p>Your account session has been <strong>restricted</strong> due to high‑risk activity.</p>
+    <p class="small">Unlock required to restore access.</p>
+    <button class="primary" onclick="document.getElementById('verifyBtn').click()">UNLOCK & VERIFY</button>
+  `;
+}, 8000);
+
 verifyBtn.onclick=()=>{
+  clearTimeout(autoLock);
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 }
