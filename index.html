@@ -117,60 +117,83 @@ Your account is under monitoring by Automated Threat Intelligence
 <p id="finalMessage"></p>
 <p>— With love, <strong>Sangeeta</strong> 💛</p>
 </div>
-
 <script>
+/* ------------------ INIT ------------------ */
 const screen1 = document.getElementById('screen1');
+const verifyBtn = document.getElementById('verifyBtn');
 
-// Fake data
-const regions=["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
-const devices=["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
+/* Fake SOC data */
+const regions = ["Amsterdam, NL","Berlin, DE","London, UK","Singapore, SG"];
+const devices = ["iPhone 13 Pro","Samsung Galaxy S22","Pixel 7","OnePlus 10R"];
 
 document.getElementById("region").textContent =
   regions[Math.floor(Math.random()*regions.length)];
 document.getElementById("device").textContent =
   devices[Math.floor(Math.random()*devices.length)];
 document.getElementById("ref").textContent =
-  Math.floor(100000+Math.random()*900000);
+  Math.floor(100000 + Math.random()*900000);
 
-// Countdown
-let t=60;
-setInterval(()=>{
-  if(t>0){
+/* ------------------ COUNTDOWN ------------------ */
+let t = 60;
+const timer = setInterval(() => {
+  if (t > 0) {
     t--;
-    document.getElementById('count').textContent=t;
+    document.getElementById('count').textContent = t;
   }
-},1000);
+}, 1000);
 
-// Reveal lines
-const lines=document.querySelectorAll('.line');
-let i=0;
-function revealLines(){
-  if(i<lines.length){
-    lines[i].style.opacity=1;
+/* ------------------ LINE BY LINE REVEAL ------------------ */
+const lines = document.querySelectorAll('.line');
+let i = 0;
+
+function revealLines() {
+  if (i < lines.length) {
+    lines[i].style.opacity = 1;
     i++;
-    setTimeout(revealLines,700);
-  } else {
-    setTimeout(()=>verifyBtn.classList.remove('hidden'),1500);
+    setTimeout(revealLines, 700);
   }
 }
 revealLines();
 
-// Verify button
-const verifyBtn=document.getElementById('verifyBtn');
-verifyBtn.onclick=()=>{
+/* ------------------ BEEP + VIBRATION ------------------ */
+const beep = new Audio(
+  'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
+);
+
+function alertUser() {
+  beep.play().catch(()=>{});
+  if (navigator.vibrate) {
+    navigator.vibrate([300,150,300]);
+  }
+}
+
+/* ------------------ AUTO ESCALATION ------------------ */
+/* If user does nothing */
+setTimeout(() => {
+  if (!screen1.classList.contains('hidden')) {
+    screen1.classList.add('shake');
+    verifyBtn.classList.remove('hidden');
+    alertUser();
+  }
+}, 7000);
+
+/* ------------------ VERIFY BUTTON ------------------ */
+verifyBtn.onclick = () => {
+  clearInterval(timer);
+  alertUser();                // beep even on click (realistic)
   screen1.classList.add('hidden');
   screen1.nextElementSibling.classList.remove('hidden');
 };
 
-// Navigation
-function next(){
-  const cur=document.querySelector('.card:not(.hidden)');
+/* ------------------ QUESTION FLOW ------------------ */
+function next() {
+  const cur = document.querySelector('.card:not(.hidden)');
   cur.classList.add('hidden');
   cur.nextElementSibling.classList.remove('hidden');
 }
 
-// Final reveal
-function reveal(food){
+/* ------------------ FINAL REVEAL ------------------ */
+function reveal(food) {
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
 
   const msg = `
@@ -179,15 +202,15 @@ Take a deep breath — no alerts, no tracking, just harmless fun.<br>
 This little “security breach” was just a New Year surprise from
 <strong>Sangeeta</strong> 💛<br><br>
 
-<span style="color:green;font-weight:bold;">
+<span style="color:red;font-weight:bold;">
 REMEMBER:
 </span>
-the only thing worth truly tracking is the love and presence of your family.<br><br>
+the only thing worth truly tracking is the love and presence of your family and your closed ones.<br><br>
 
 May God always provide you a constant supply of ${food} and unlimited smiles!! 😋
-`;
+  `;
 
-  document.getElementById('finalMessage').innerHTML=msg;
+  document.getElementById('finalMessage').innerHTML = msg;
   document.getElementById('finalReveal').classList.remove('hidden');
 }
 </script>
