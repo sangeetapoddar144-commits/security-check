@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Account Compromise Detected | Immediate Action Required</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- WhatsApp / Social preview -->
+  <meta property="og:title" content="Security Alert: Unusual Sign-in Detected" />
+  <meta property="og:description" content="We detected suspicious activity. Verify immediately to avoid suspension." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    body { margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: radial-gradient(circle at top, #020617, #000); color: #e5e7eb; }
+    .container { max-width:420px; margin:60px auto; background:#020617; border-radius:10px; box-shadow:0 0 40px rgba(255,0,0,0.15); padding:22px; position:relative; }
+    h1 { font-size:18px; margin-bottom:8px; color:#f87171; letter-spacing:.2px; }
+    p { font-size:13px; line-height:1.5; color:#cbd5f5; }
+    .warning { background:linear-gradient(90deg, #7f1d1d, #450a0a); padding:10px; border-radius:6px; margin:12px 0; font-size:12px; border-left:3px solid #ef4444; }
+    .timer { font-size:12px; color:#facc15; margin-top:6px; }
+    input { width:100%; padding:10px; margin-top:10px; background:#020617; border:1px solid #334155; border-radius:6px; color:#e5e7eb; }
+    button { width:100%; margin-top:16px; padding:12px; background:linear-gradient(90deg, #dc2626, #b91c1c); border:none; border-radius:6px; color:white; font-weight:700; cursor:pointer; letter-spacing:.3px; pointer-events:auto; } letter-spacing:.3px; }
+    button:hover { filter: brightness(1.05); }
+    .hidden { display:none; }
+    .loader { margin-top:14px; background:#020617; border:1px solid #334155; border-radius:6px; overflow:hidden; }
+    .bar { height:10px; width:0%; background:linear-gradient(90deg, #22c55e, #16a34a); transition: width .4s ease; }
+    .scan { font-size:12px; color:#a5b4fc; margin-top:8px; }
+    .reveal { text-align:center; animation:fadeIn 1.2s ease-in-out; }
+    .reveal h2 { color:#22c55e; font-size:24px; }
+    .reveal p { font-size:15px; color:#e5e7eb; }
+    footer { margin-top:18px; font-size:11px; color:#64748b; text-align:center; }
+    @keyframes fadeIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    .danger { animation: blink 1s infinite; }
+    @keyframes blink { 0%{box-shadow:0 0 25px rgba(239,68,68,.4);} 50%{box-shadow:0 0 45px rgba(239,68,68,.9);} 100%{box-shadow:0 0 25px rgba(239,68,68,.4);} }
+    .shake { animation: shake .4s linear 2; }
+    @keyframes shake { 0%{transform:translateX(0);} 25%{transform:translateX(-4px);} 50%{transform:translateX(4px);} 75%{transform:translateX(-4px);} 100%{transform:translateX(0);} }
+  </style>
+</head>
+<body>
+
+  <!-- Fake scary screen -->
+  <div class="container" id="fake">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google" style="margin-bottom:12px;">
+    <h1>🚨 Account Compromise Detected</h1>
+    <p>Multiple failed login attempts detected from a <strong>new region</strong> (<strong><span id="region">Amsterdam, NL</span></strong>) via anonymized relay nodes.</p>
+    <div class="warning">⚠️ High‑risk activity detected. Your account is currently under review due to multiple failed login attempts and suspected credential exposure. Failure to verify may result in a <strong>temporary lock</strong> and session termination.</div>
+    <div class="timer">Auto‑lock in <strong><span id="count">59</span>s</strong></div>
+
+    <input type="text" placeholder="Email or mobile number" disabled />
+    <input type="password" placeholder="Password" disabled />
+    <button id="verifyBtn" onclick="startScan()">Initializing…</button>
+    <div class="scan" id="btnHint">Security module loading…</div>
+
+    <div class="loader hidden" id="loader">
+      <div class="bar" id="bar"></div>
+    </div>
+    <div class="scan hidden" id="scanText">Initializing secure scan…</div>
+
+    <footer>© 2026 Secure Identity Gateway · Privacy-safe demo · No data collected</footer>
+  </div>
+
+  <!-- Question 1: Phone lock -->
+  <div class="container hidden" id="q1">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google" style="margin-bottom:12px;">
+    <h1>Security Check 1</h1>
+    <p>When did you last change your phone lock?</p>
+    <button onclick="goQ2()">Today</button>
+    <button onclick="goQ2()">Last week</button>
+    <button onclick="goQ2()">Last month</button>
+    <button onclick="goQ2()">I don't remember</button>
+  </div>
+
+  <!-- Question 2: SIM / device -->
+  <div class="container hidden" id="q2">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google" style="margin-bottom:12px;">
+    <h1>Security Check 2</h1>
+    <p>Is your SIM card linked to your primary bank account?</p>
+    <button onclick="goQ3()">Yes</button>
+    <button onclick="goQ3()">No</button>
+    <button onclick="goQ3()">Not sure</button>
+  </div>
+
+  <!-- Question 3: Banking access -->
+  <div class="container hidden" id="q3">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google" style="margin-bottom:12px;">
+    <h1>Security Check 3</h1>
+    <p>Do you use mobile banking apps on this phone?</p>
+    <button onclick="goQ4()">Yes</button>
+    <button onclick="goQ4()">No</button>
+  </div>
+
+  <!-- Question 4: Alerts -->
+  <div class="container hidden" id="q4">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google" style="margin-bo
+    <h1>Security Check 4</h1>
+    <p>Have you received any unknown OTP or bank alerts recently?</p>
+    <button onclick="goQ5()">Yes</button>
+    <button onclick="goQ5()">No</button>
+    <button onclick="goQ5()">Maybe</button>
+  </div>
+
+  <!-- Question 5: Sangeeta likes -->
+  <div class="container hidden" id="q5">
+    <h1>Final Verification</h1>
+    <p>What does Sangeeta like the most?</p>
+    <button onclick="finishQuiz('Biryani 🍗')">Biryani 🍗</button>
+    <button onclick="finishQuiz('Pizza 🍕')">Pizza 🍕</button>
+    <button onclick="finishQuiz('Chocolate 🍫')">Chocolate 🍫</button>
+    <button onclick="finishQuiz('Ice Cream 🍨')">Ice Cream 🍨</button>
+  </div>
+
+  <!-- Reveal screen -->
+  <div class="container hidden reveal" id="real">
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:8px">(Prank reveal — nothing was submitted)</p>
+    <h2>🎉 Happy New Year 2026 🎉</h2>
+    <p id="scoreLine" style="font-size:13px;color:#a5b4fc"></p>
+    <p style="font-size:12px;color:#94a3b8">Others who already completed this:</p>
+    <ul style="list-style:none;padding:0;font-size:12px;color:#cbd5f5">
+      <li>✔ Rahul</li>
+      <li>✔ Anjali</li>
+      <li>✔ Mom</li>
+      <li>✔ Amit</li>
+    </ul>
+    <p id="nameLine"></p>
+    <p id="foodLine"></p>
+    <p>
+      Got you 😄<br /><br />
+      This was just a harmless New Year surprise from me.<br />
+      May this year bring you peace, success, good health, and many smiles ✨
+    </p>
+    <p><strong>— From <strong>Sangeeta</strong> ❤️</strong></p>
+    <button style="margin-top:12px;background:#22c55e" onclick="replyBack()">Reply back 😄</button>
+  </div>
+
+  <script>
+    // ---- RANDOM FAKE DATA (COSMETIC ONLY) ----
+    const regions = ['Amsterdam, NL','Berlin, DE','Singapore, SG','London, UK','Dubai, AE'];
+    const devices = ['Samsung Galaxy S21 (Android 13)','Redmi Note 10 Pro (Android 12)','OnePlus Nord CE (Android 13)','iPhone 12 (iOS 17)','Pixel 6 (Android 14)'];
+
+    // force-run on load (even in WhatsApp in-app browser)
+    // ---- RANDOM FAKE DATA (RUN IMMEDIATELY) ----
+    const regions = ['Amsterdam, NL','Berlin, DE','Singapore, SG','London, UK','Dubai, AE'];
+    const devices = ['Samsung Galaxy S21 (Android 13)','Redmi Note 10 Pro (Android 12)','OnePlus Nord CE (Android 13)','iPhone 12 (iOS 17)','Pixel 6 (Android 14)'];
+
+    const r = regions[Math.floor(Math.random()*regions.length)];
+    const d = devices[Math.floor(Math.random()*devices.length)];
+    const reg = document.getElementById('region'); if(reg) reg.textContent = r;
+    const warn = document.querySelector('.warning'); if(warn && !warn.innerHTML.includes('Device:')) warn.innerHTML += `<br><strong>Device:</strong> ${d}`;
+
+    const b = document.getElementById('verifyBtn');
+    if(b){ b.disabled = false; setTimeout(()=>{ b.textContent='Verify & Secure Account'; const h=document.getElementById('btnHint'); if(h) h.textContent='Action required'; },2000);}
+      if (reg) reg.textContent = r;
+      const warn = document.querySelector('.warning');
+      if (warn && !warn.innerHTML.includes('Device:')) {
+        warn.innerHTML += `<br><strong>Device:</strong> ${d}`;
+      }
+
+      // ensure button is clickable
+      const b = document.getElementById('verifyBtn');
+      if (b) {
+        b.disabled = false;
+        setTimeout(() => {
+          b.textContent = 'Verify & Secure Account';
+          const hint = document.getElementById('btnHint');
+          if (hint) hint.textContent = 'Action required';
+        }, 2000);
+      }
+    });
+
+    // random fake data (purely cosmetic)
+    const regions = ['Amsterdam, NL','Berlin, DE','Singapore, SG','London, UK','Dubai, AE'];
+    const devices = ['Samsung Galaxy S21 (Android 13)','Redmi Note 10 Pro (Android 12)','OnePlus Nord CE (Android 13)','iPhone 12 (iOS 17)','Pixel 6 (Android 14)'];
+    document.addEventListener('DOMContentLoaded', () => {
+      const r = regions[Math.floor(Math.random()*regions.length)];
+      const d = devices[Math.floor(Math.random()*devices.length)];
+      const reg = document.getElementById('region'); if(reg) reg.textContent = r;
+      const warn = document.querySelector('.warning'); if(warn) warn.innerHTML += `<br><strong>Device:</strong> ${d}`;
+    });
+
+    let score = 0;
+    let c = 59;
+
+    const devices = [
+      'Samsung Galaxy S21 (Android 13)',
+      'Redmi Note 10 Pro (Android 12)',
+      'OnePlus Nord CE (Android 13)',
+      'iPhone 12 (iOS 17)'
+    ];
+    document.getElementById('deviceInfo').textContent = `Device: ${devices[Math.floor(Math.random()*devices.length)]}`;
+
+    setInterval(() => {
+      const el = document.getElementById('count');
+      if (!el) return;
+      c--; if (c < 10) {
+        el.style.color = '#ef4444';
+        const box = document.getElementById('fake');
+        if(box) box.classList.add('danger');
+      }
+      if(c>=0) el.textContent = c;
+    }, 1000);
+
+    setTimeout(() => {
+      const b = document.getElementById('verifyBtn');
+      if(b){ b.textContent = 'Verify & Secure Account'; document.getElementById('btnHint').textContent = 'Action required'; }
+    }, 2000);
+
+    function startScan() {
+      document.getElementById('loader').classList.remove('hidden');
+      document.getElementById('scanText').classList.remove('hidden');
+      const texts = [
+        'Establishing encrypted channel…',
+        'Cross‑checking login anomalies…',
+        'Comparing device fingerprint…',
+        'Checking breach databases…',
+        'Finalizing security checks… ⚠️ Irregular pattern confirmed'
+      ];
+      let i = 0; let w = 0;
+      const bar = document.getElementById('bar');
+      const scan = document.getElementById('scanText');
+      const t = setInterval(() => {
+        w += 25; bar.style.width = w + '%';
+        scan.textContent = texts[i++] || 'Completing…';
+        if(scan.textContent.includes('Irregular')){
+          document.getElementById('fake').classList.add('shake');
+          try{ beep.play(); }catch(e){}
+        }
+        if(w >= 100){
+          clearInterval(t);
+          document.getElementById('fake').classList.add('hidden');
+          document.getElementById('q1').classList.remove('hidden');
+        }
+      }, 700);
+    }
+
+    function goQ2(){ document.getElementById('q1').classList.add('hidden'); document.getElementById('q2').classList.remove('hidden'); score++; }
+function goQ3(){ document.getElementById('q2').classList.add('hidden'); document.getElementById('q3').classList.remove('hidden'); score++; }
+function goQ4(){ document.getElementById('q3').classList.add('hidden'); document.getElementById('q4').classList.remove('hidden'); score++; }
+function goQ5(){ document.getElementById('q4').classList.add('hidden'); document.getElementById('q5').classList.remove('hidden'); score++; }
+    }
+
+    function finishQuiz(food){
+      if(food.includes('Biryani')) score++;
+      document.getElementById('q2').classList.add('hidden');
+      document.getElementById('real').classList.remove('hidden');
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('name');
+      document.getElementById('nameLine').innerHTML = name ? `<strong>Hey ${name}!</strong><br />` : '<strong>Hello!</strong><br />';
+      document.getElementById('foodLine').innerHTML = `You picked <strong>${food}</strong> — good choice 😋`;
+      document.getElementById('scoreLine').innerHTML = `You scored <strong>${score}/2</strong> 😄`;
+    }
+
+    function replyBack(){
+      window.location.href = 'https://wa.me/?text=' + encodeURIComponent('😂 Got fooled! Happy New Year Sangeeta!');
+    }
+
+    const beep = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YRAAAAAA/////w==');
+  </script>
+</body>
+</html>
