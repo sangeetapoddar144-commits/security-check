@@ -207,7 +207,37 @@ setTimeout(() => {
 
   alertUser([600,200,600,200,600]);
 
-  screen1.classList.add('hidden');
+  /* 10s – HARD LOCKOUT (overlay style) */
+setTimeout(() => {
+  if(handled) return;
+
+  alertUser([600,200,600,200,600]);
+
+  // Disable button interaction
+  verifyBtn.disabled = true;
+  verifyBtn.textContent = 'ACCOUNT LOCKED';
+  verifyBtn.style.opacity = '0.6';
+
+  // Inject lockout warning
+  const lockMsg = document.createElement('div');
+  lockMsg.style.marginTop = '16px';
+  lockMsg.style.padding = '12px';
+  lockMsg.style.border = '1px solid #7f1d1d';
+  lockMsg.style.background = '#1a0f0f';
+  lockMsg.style.borderRadius = '8px';
+  lockMsg.innerHTML = `
+    <p style="color:#ff4d4d;font-weight:700;margin:0">
+      Account temporarily locked
+    </p>
+    <p class="small" style="margin-top:6px">
+      Sign-in disabled due to inactivity.<br>
+      Active sessions frozen.<br>
+      Security team notified.
+    </p>
+  `;
+  screen1.appendChild(lockMsg);
+}, 10000);
+
   lockoutScreen.classList.remove('hidden');
 }, 10000);
 
