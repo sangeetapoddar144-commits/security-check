@@ -146,6 +146,10 @@ button:disabled{opacity:.6}
 </div>
 
 <script>
+let audioUnlocked = false;
+let beep;
+let bgMusic;
+
 /* Fake data */
 const regions=["Berlin, DE","Amsterdam, NL","London, UK", "Australia, AU"];
 const devices=["Pixel 7","iPhone 13 Pro","Galaxy S22", "Galaxy S24 Ultra", "Pixel 9 Pro"];
@@ -200,11 +204,22 @@ reviewBtn.onclick=startQuestions;
 
 let vibeInterval;
 function startQuestions(){
+  if (!audioUnlocked) {
+    beep = new Audio(
+      'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
+    );
+    bgMusic = new Audio("./chatur.mp3");
+    bgMusic.volume = 0.4;
+    audioUnlocked = true;
+  }
+
   clearInterval(timer);
   main.classList.add('hidden');
   q1.classList.remove('hidden');
+
   let vibePatterns = [[200,100], [100,200,100], [300,150], [150,300]];
   let patternIndex = 0;
+
   vibeInterval = setInterval(() => {
     if ('vibrate' in navigator) {
       navigator.vibrate(vibePatterns[patternIndex]);
@@ -212,10 +227,6 @@ function startQuestions(){
     }
   }, 1000);
 }
-
-function next(id){
-  document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  document.getElementById(id).classList.remove('hidden');
   
   // Stopping vibration and play song on q4
   if (id === 'q4') {
