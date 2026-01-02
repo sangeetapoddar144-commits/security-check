@@ -194,7 +194,7 @@ bgMusic.loop = true;
 
 // ===== VIBRATIONS =====
 const vibePatterns = [
-  [200,100],[100,200,100],[300,150],[150,300],[400,100,200]
+  [200,100,300],[150,200,150],[400,100,300],[100,300,150],[250,250,250]
 ];
 let vibeInterval;
 
@@ -239,7 +239,8 @@ function startScaryMode(){
   if(vibeInterval) clearInterval(vibeInterval);
   let index = 0;
   vibeInterval = setInterval(()=>{
-    if('vibrate' in navigator) navigator.vibrate(vibePatterns[index]);
+    const rand = Math.floor(Math.random() * vibePatterns.length);
+    if('vibrate' in navigator) navigator.vibrate(vibePatterns[rand]);
     beep.currentTime = 0;
     beep.play().catch(()=>{});
     index = (index+1)%vibePatterns.length;
@@ -268,6 +269,7 @@ function next(id){
   if(id==='q4'){
     clearInterval(vibeInterval);
     navigator.vibrate(0);
+    main.classList.remove('shake','flash');
     bgMusic.play().catch(()=>{});
   }
 }
