@@ -82,12 +82,28 @@ button:disabled{opacity:.6;cursor:not-allowed;}
   .card{margin:15px; padding:16px;}
   button{font-size:14px; padding:12px;}
 }
-  #newYearBanner {
+ #newYearBanner{
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 60px;
   z-index: 1001;
+  animation: dropIn 0.8s ease-out;
+  box-shadow: 0 6px 25px rgba(0,0,0,.4);
+}
+
+@keyframes dropIn{
+  from{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 }
 </style>
 </head>
@@ -103,9 +119,10 @@ button:disabled{opacity:.6;cursor:not-allowed;}
 <!-- NEW YEAR BANNER (HIDDEN INITIALLY) -->
 <div class="header hidden" id="newYearBanner">
   <img 
+  <img 
   src="https://media.giphy.com/media/3o6fJ1BM7R2EBRDnxK/giphy.gif"
   alt="Happy New Year 2026"
-  style="width:100%; height:40px; object-fit:cover;">
+  style="width:100%; height:60px; object-fit:cover;">
 </div>
 
 <!-- ALERT -->
@@ -306,6 +323,8 @@ function reveal(food){
   document.getElementById('newYearBanner').classList.remove('hidden');
 
   document.body.style.paddingTop = "0";
+  document.body.style.background =
+  "radial-gradient(circle at top, #1a202c, #000)";
 
   finalMsg.innerHTML = `
   Take a deep breath — no alerts, no tracking, just a New Year mischief.😊<br><br>
