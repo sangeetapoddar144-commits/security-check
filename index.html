@@ -225,7 +225,7 @@ function next(id){
     if ('vibrate' in navigator){
       navigator.vibrate(0);
   }
-    
+    const audio = new Audio("./chatur.mp3");
     audio.volume=0.4
     audio.play().catch(() => {});
 
