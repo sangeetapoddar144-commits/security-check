@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Google Security Alert | New Year Prank</title>
+<title>Google Security Alert</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{
   margin:0;
-  padding-top:64px;
+  padding-top:40px;
   background:#0b0f14;
   font-family:system-ui,-apple-system,"Segoe UI",Roboto;
   color:#eaeaea;
@@ -33,7 +32,7 @@ body{
   border-radius:12px;
   padding:22px;
   box-shadow:0 0 35px rgba(255,0,0,.25);
-  transition: box-shadow 0.3s;
+  transition:0.3s;
 }
 .line{opacity:0;transition:.6s;margin:10px 0}
 .alert{color:#facc15}
@@ -49,29 +48,52 @@ button{
   background:linear-gradient(#1f2937,#111827);
   color:#e5e7eb;
   cursor:pointer;
+  transition:0.3s;
 }
-button:disabled{opacity:.6}
-.primary{background:linear-gradient(#dc2626,#991b1b);border-color:#7f1d1d;}
-.secondary{background:linear-gradient(#374151,#1f2937);}
+button:disabled{opacity:.6;cursor:not-allowed;}
+.primary{
+  background:#d93025;
+  border:none;
+  color:#fff;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+.secondary{
+  background:linear-gradient(#374151,#1f2937);
+}
 .hidden{display:none}
 .small{font-size:12px;color:#9ca3af}
+
+/* Shake & Flash */
 .shake{animation:shake .4s linear 2}
-@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 35px rgba(255,0,0,.25);}
-  50%{box-shadow:0 0 60px rgba(255,255,0,.6);}
+@keyframes shake{
+  25%{transform:translateX(-4px)}
+  50%{transform:translateX(4px)}
+  75%{transform:translateX(-4px)}
 }
-.flash{animation:pulse 1s infinite;}
+@keyframes flash{
+  0%,100%{box-shadow:0 0 35px rgba(255,0,0,.5);}
+  50%{box-shadow:0 0 60px rgba(255,255,0,0.8);}
+}
+.flash { animation: flash 1s infinite; }
+
+/* Responsive adjustments */
+@media(max-width:480px){
+  .card{margin:15px; padding:16px;}
+  button{font-size:14px; padding:12px;}
+}
 </style>
 </head>
+
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png">
   <span>Google Account Security</span>
 </div>
 
-<!-- MAIN ALERT -->
+<!-- ALERT -->
 <div class="card" id="main">
   <h2>Security Alert</h2>
   <p class="line danger">Unusual sign-in attempt detected</p>
@@ -81,30 +103,40 @@ button:disabled{opacity:.6}
   <p class="line alert">Action required to avoid restriction</p>
   <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
 
-  <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
-  <button id="reviewBtn" class="secondary hidden">REVIEW SECURITY ACTIVITY</button>
+  <button id="verifyBtn" class="primary hidden">
+    VERIFY & SECURE ACCOUNT
+  </button>
+
+  <button id="reviewBtn" class="secondary hidden">
+    REVIEW SECURITY ACTIVITY
+  </button>
+
   <p class="small">Case ID: G-SEC-<span id="ref"></span></p>
 </div>
 
-<!-- QUESTIONS -->
+<!-- QUESTIONSS -->
 <div class="card hidden" id="q1">
   <h3>Security Check 1/4</h3>
   <p>Did you attempt this sign-in?</p>
   <button onclick="next('q2')">Yes</button>
   <button onclick="next('q2')">No</button>
 </div>
+
 <div class="card hidden" id="q2">
   <h3>Security Check 2/4</h3>
   <p>Is this device familiar to you?</p>
   <button onclick="next('q3')">Yes</button>
   <button onclick="next('q3')">No</button>
 </div>
+
 <div class="card hidden" id="q3">
   <h3>Security Check 3/4</h3>
   <p>Did you download any unknown files or apps recently?</p>
   <button onclick="next('q4')">Yes</button>
   <button onclick="next('q4')">No</button>
 </div>
+  
+
 <div class="card hidden" id="q4">
   <h3>Final Verification</h3>
   <p>What is your favourite food? 👀</p>
@@ -122,112 +154,140 @@ button:disabled{opacity:.6}
 
 <!-- FINAL -->
 <div class="card hidden" id="final">
-  <h2>👻 Got you!!!</h2>
+  <h2> 👻 Got you!!!</h2>
   <p id="finalMsg"></p>
   <p>— With love,<br> <strong>Sangeeta</strong> 💛</p>
 </div>
 
 <script>
-/* ------------------- FAKE DATA ------------------- */
-const regions=["Berlin, DE","Amsterdam, NL","London, UK","Australia, AU"];
-const devices=["Pixel 7","iPhone 13 Pro","Galaxy S22","Galaxy S24 Ultra","Pixel 9 Pro"];
-device.textContent=devices[Math.floor(Math.random()*devices.length)];
-region.textContent=regions[Math.floor(Math.random()*regions.length)];
-ref.textContent=Math.floor(100000+Math.random()*900000);
+// ===== ELEMENTS =====
+const region = document.getElementById("region");
+const device = document.getElementById("device");
+const ref = document.getElementById("ref");
+const count = document.getElementById("count");
+const main = document.getElementById("main");
+const verifyBtn = document.getElementById("verifyBtn");
+const reviewBtn = document.getElementById("reviewBtn");
+const final = document.getElementById("final");
+const finalMsg = document.getElementById("finalMsg");
+const locked = document.getElementById("locked");
 
-/* ------------------- LINE REVEAL ------------------- */
+// ===== FAKE DATA =====
+const regions = ["Berlin, DE","Amsterdam, NL","London, UK", "Australia, AU"];
+const devices = ["Pixel 7","iPhone 13 Pro","Galaxy S22", "Galaxy S24 Ultra", "Pixel 9 Pro"];
+region.textContent = regions[Math.floor(Math.random()*regions.length)];
+device.textContent = devices[Math.floor(Math.random()*devices.length)];
+ref.textContent = Math.floor(100000 + Math.random()*900000);
+
+// ===== LINE REVEAL =====
 document.querySelectorAll('.line').forEach((l,i)=>{
-  setTimeout(()=>l.style.opacity=1,i*700);
+  setTimeout(()=>l.style.opacity=1, i*700);
 });
 
-/* ------------------- SOUND + VIBRATION ------------------- */
-const beep=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA');
-let scaryInterval; 
-let escalationLevel = 0;
-let chaturAudio = new Audio("chatur.mp3");
+// ===== SOUNDS =====
+let audioUnlocked = false;
+let beep = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA');
+beep.volume = 0.7;
+let bgMusic = new Audio("./chatur.mp3");
+bgMusic.volume = 0.4;
+bgMusic.loop = true;
 
-/* Play beep + vibrate pattern */
-function alertUser(){
-  // progressive vibration pattern
-  let pattern = [200,100,200];
-  if(escalationLevel===1) pattern = [400,150,400];
-  if(escalationLevel===2) pattern = [600,200,600];
-  if('vibrate' in navigator) navigator.vibrate(pattern);
+// ===== VIBRATIONS =====
+const vibePatterns = [
+  [200,100],[100,200,100],[300,150],[150,300],[400,100,200]
+];
+let vibeInterval;
 
-  beep.play().catch(()=>{});
-}
-
-/* -------------------BUTTON ESCALATION ------------------- */
+// ===== ESCALATION BUTTONS =====
 setTimeout(()=>{
   verifyBtn.classList.remove('hidden');
-  alertUser();
+  alertUser([200,100,200]);
 },7000);
 
 setTimeout(()=>{
+  verifyBtn.disabled = true;
+  verifyBtn.textContent = "VERIFICATION DELAYED";
   reviewBtn.classList.remove('hidden');
   main.classList.add('shake');
-  escalationLevel=0;
-
-  scaryInterval = setInterval(()=>{
-    escalationLevel++;
-    if(escalationLevel>2) escalationLevel=2;
-    main.classList.add('flash');
-    setTimeout(()=>main.classList.remove('flash'),300);
-    alertUser();
-  },1200);
+  alertUser([400,150,400]);
+  startScaryMode();
 },10000);
 
-/* ------------------- COUNTDOWN ------------------- */
+// ===== COUNTDOWN TIMER =====
 let t=60;
-const timer=setInterval(()=>{
+const timer = setInterval(()=>{
   t--;
   count.textContent=t;
+  if(t===10) main.classList.add('flash');
   if(t===0){
     clearInterval(timer);
     main.classList.add('hidden');
     locked.classList.remove('hidden');
-    clearInterval(scaryInterval);
-    alertUser();
+    alertUser([700,200,700]);
   }
 },1000);
 
-/* ------------------- NAVIGATION ------------------- */
-verifyBtn.onclick=startQuestions;
-reviewBtn.onclick=startQuestions;
+// ===== ALERT FUNCTION =====
+function alertUser(pattern){
+  beep.currentTime = 0;
+  beep.play().catch(()=>{});
+  if(navigator.vibrate) navigator.vibrate(pattern);
+}
+
+// ===== FLASHY MODE =====
+function startScaryMode(){
+  if(vibeInterval) clearInterval(vibeInterval);
+  let index = 0;
+  vibeInterval = setInterval(()=>{
+    if('vibrate' in navigator) navigator.vibrate(vibePatterns[index]);
+    beep.currentTime = 0;
+    beep.play().catch(()=>{});
+    index = (index+1)%vibePatterns.length;
+  },1200);
+}
+
+// ===== NAVIGATION =====
+verifyBtn.onclick = startQuestions;
+reviewBtn.onclick = startQuestions;
 
 function startQuestions(){
+  if(!audioUnlocked) audioUnlocked=true;
   clearInterval(timer);
   main.classList.add('hidden');
   q1.classList.remove('hidden');
 }
 
+// ===== NEXT QUESTION =====
 function next(id){
-  document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  document.getElementById(id).classList.remove('hidden');
+  const current = document.querySelector('.card:not(.hidden)');
+  current.classList.add('hidden');
+  const nextCard = document.getElementById(id);
+  nextCard.classList.remove('hidden');
 
+  // Stop vibrations on q4
   if(id==='q4'){
-    clearInterval(scaryInterval);
+    clearInterval(vibeInterval);
     navigator.vibrate(0);
-    chaturAudio.volume=0.4;
-    chaturAudio.play().catch(()=>{});
+    bgMusic.play().catch(()=>{});
   }
 }
 
+// ===== RECOVER =====
 function recover(){
   locked.classList.add('hidden');
   q1.classList.remove('hidden');
 }
 
+// ===== FINAL REVEAL =====
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  finalMsg.innerHTML=`
-  Take a deep breath — no alerts, no tracking, just a New Year mischief 😊<br><br>
+  finalMsg.innerHTML = `
+  Take a deep breath — no alerts, no tracking, just a New Year mischief.😊<br><br>
   <span style="color:green;font-weight:bold;">REMEMBER:</span>
   The most meaningful connections aren’t tracked — they’re felt.<br><br>
   May you always have plenty of <strong>${food}</strong> and <strong>sparkling smiles</strong> this year!! 😋<br><br>
   One real thing worth doing as you start the year:<br>
-  🔐 Review your Google account security here: 
-  <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/security</a><br><br>
+  🔐 Review your Google account security here: <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/security</a><br><br>
   New year, new starts, new security habits 😉<br><br>
   <span style="color:#7f8fa;font-size:0.95rem;font-style:italic;">Authored by me, informed by the wider web.</span>
   `;
