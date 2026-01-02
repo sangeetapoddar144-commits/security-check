@@ -379,6 +379,14 @@ function reveal(food){
   <span style="color:#7f8fa;font-size:0.95rem;font-style:italic;">Authored by me, informed by the wider web.</span>
   `;
   final.classList.remove('hidden');
+  function toggleMusic() {
+  if (bgMusic.paused) {
+    bgMusic.play();
+  } else {
+    bgMusic.pause();
+  }
+}
+
 }
 </script>
 </body>
