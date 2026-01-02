@@ -137,4 +137,67 @@ button:disabled{opacity:.6}
   <button onclick="next('q2')">No</button>
 </div>
 
-<div class="c
+<div class="card hidden" id="q2">
+  <h3>Final Step</h3>
+  <p>Your favourite food?</p>
+  <button onclick="reveal('Biryani 🍗')">Biryani</button>
+  <button onclick="reveal('Pizza 🍕')">Pizza</button>
+</div>
+
+<!-- FINAL -->
+<div class="card hidden" id="final">
+  <h2>😄 Got you!</h2>
+  <div id="finalMsg"></div>
+  <p style="margin-top:18px">— With love,<br><strong>Sangeeta</strong> 💛</p>
+</div>
+
+<script>
+const region=document.getElementById("region");
+const device=document.getElementById("device");
+const ref=document.getElementById("ref");
+const count=document.getElementById("count");
+
+region.textContent=["Berlin","London","Amsterdam","Sydney"][Math.random()*4|0];
+device.textContent=["Pixel","iPhone","Galaxy"][Math.random()*3|0];
+ref.textContent=Math.floor(100000+Math.random()*900000);
+
+document.querySelectorAll(".line").forEach((l,i)=>{
+  setTimeout(()=>l.style.opacity=1,i*600);
+});
+
+setTimeout(()=>verifyBtn.classList.remove("hidden"),6000);
+setTimeout(()=>reviewBtn.classList.remove("hidden"),9000);
+
+let t=60;
+setInterval(()=>{count.textContent=--t},1000);
+
+verifyBtn.onclick=reviewBtn.onclick=()=>{
+  main.classList.add("hidden");
+  q1.classList.remove("hidden");
+};
+
+function next(id){
+  document.querySelector(".card:not(.hidden)").classList.add("hidden");
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function reveal(food){
+  document.querySelector(".card:not(.hidden)").classList.add("hidden");
+  googleHeader.classList.add("hidden");
+  newYearBanner.classList.remove("hidden");
+  document.body.style.paddingTop="0";
+
+  finalMsg.innerHTML=`
+  <p>Just a little New Year surprise 😊</p>
+  <p>May your year be filled with ${food}, good health, and smiles.</p>
+  <p style="margin-top:12px;font-size:.9rem;color:#9ca3af;font-style:italic">
+  Crafted with care, informed by the wider web.
+  </p>
+  `;
+  final.classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
+
