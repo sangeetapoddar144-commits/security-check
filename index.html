@@ -257,6 +257,14 @@ beep.volume = 0.7;
 let bgMusic = new Audio("./chatur.mp3");
 bgMusic.volume = 0.4;
 bgMusic.loop = true;
+function toggleMusic() {
+  if (bgMusic.paused) {
+    bgMusic.play();
+  } else {
+    bgMusic.pause();
+  }
+}
+
 
 // ===== VIBRATIONS =====
 const vibePatterns = [
