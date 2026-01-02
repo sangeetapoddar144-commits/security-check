@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Google Security Alert</title>
+<title>Google Security Alert | New Year Prank</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
-  padding-top:40px;
+  padding-top:64px;
   background:#0b0f14;
   font-family:system-ui,-apple-system,"Segoe UI",Roboto;
   color:#eaeaea;
@@ -33,6 +33,7 @@ body{
   border-radius:12px;
   padding:22px;
   box-shadow:0 0 35px rgba(255,0,0,.25);
+  transition: box-shadow 0.3s;
 }
 .line{opacity:0;transition:.6s;margin:10px 0}
 .alert{color:#facc15}
@@ -47,31 +48,22 @@ button{
   border:1px solid #2c3440;
   background:linear-gradient(#1f2937,#111827);
   color:#e5e7eb;
+  cursor:pointer;
 }
 button:disabled{opacity:.6}
-.primary{
-  background:linear-gradient(#dc2626,#991b1b);
-  border-color:#7f1d1d;
-}
-.secondary{
-  background:linear-gradient(#374151,#1f2937);
-}
+.primary{background:linear-gradient(#dc2626,#991b1b);border-color:#7f1d1d;}
+.secondary{background:linear-gradient(#374151,#1f2937);}
 .hidden{display:none}
 .small{font-size:12px;color:#9ca3af}
 .shake{animation:shake .4s linear 2}
-@keyframes shake{
-  25%{transform:translateX(-4px)}
-  50%{transform:translateX(4px)}
-  75%{transform:translateX(-4px)}
+@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 35px rgba(255,0,0,.25);}
+  50%{box-shadow:0 0 60px rgba(255,255,0,.6);}
 }
- @keyframes pulse{
-  0%, 100% { box-shadow: 0 0 35px rgba(255,0,0,.25); }
-  50% { box-shadow: 0 0 60px rgba(255,255,0,.6); }
-}
-.flash { animation: pulse 1s infinite; }
+.flash{animation:pulse 1s infinite;}
 </style>
 </head>
-
 <body>
 
 <div class="header">
@@ -79,7 +71,7 @@ button:disabled{opacity:.6}
   <span>Google Account Security</span>
 </div>
 
-<!-- ALERT -->
+<!-- MAIN ALERT -->
 <div class="card" id="main">
   <h2>Security Alert</h2>
   <p class="line danger">Unusual sign-in attempt detected</p>
@@ -89,14 +81,8 @@ button:disabled{opacity:.6}
   <p class="line alert">Action required to avoid restriction</p>
   <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
 
-  <button id="verifyBtn" class="primary hidden">
-    VERIFY & SECURE ACCOUNT
-  </button>
-
-  <button id="reviewBtn" class="secondary hidden">
-    REVIEW SECURITY ACTIVITY
-  </button>
-
+  <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
+  <button id="reviewBtn" class="secondary hidden">REVIEW SECURITY ACTIVITY</button>
   <p class="small">Case ID: G-SEC-<span id="ref"></span></p>
 </div>
 
@@ -107,22 +93,18 @@ button:disabled{opacity:.6}
   <button onclick="next('q2')">Yes</button>
   <button onclick="next('q2')">No</button>
 </div>
-
 <div class="card hidden" id="q2">
   <h3>Security Check 2/4</h3>
   <p>Is this device familiar to you?</p>
   <button onclick="next('q3')">Yes</button>
   <button onclick="next('q3')">No</button>
 </div>
-
 <div class="card hidden" id="q3">
   <h3>Security Check 3/4</h3>
   <p>Did you download any unknown files or apps recently?</p>
   <button onclick="next('q4')">Yes</button>
   <button onclick="next('q4')">No</button>
 </div>
-  
-
 <div class="card hidden" id="q4">
   <h3>Final Verification</h3>
   <p>What is your favourite food? 👀</p>
@@ -140,52 +122,62 @@ button:disabled{opacity:.6}
 
 <!-- FINAL -->
 <div class="card hidden" id="final">
-  <h2> 👻 Got you!!!</h2>
+  <h2>👻 Got you!!!</h2>
   <p id="finalMsg"></p>
   <p>— With love,<br> <strong>Sangeeta</strong> 💛</p>
 </div>
 
 <script>
-let audioUnlocked = false;
-let beep;
-let bgMusic;
-
-/* Fake data */
-const regions=["Berlin, DE","Amsterdam, NL","London, UK", "Australia, AU"];
-const devices=["Pixel 7","iPhone 13 Pro","Galaxy S22", "Galaxy S24 Ultra", "Pixel 9 Pro"];
-region.textContent=regions[Math.floor(Math.random()*regions.length)];
+/* ------------------- FAKE DATA ------------------- */
+const regions=["Berlin, DE","Amsterdam, NL","London, UK","Australia, AU"];
+const devices=["Pixel 7","iPhone 13 Pro","Galaxy S22","Galaxy S24 Ultra","Pixel 9 Pro"];
 device.textContent=devices[Math.floor(Math.random()*devices.length)];
+region.textContent=regions[Math.floor(Math.random()*regions.length)];
 ref.textContent=Math.floor(100000+Math.random()*900000);
 
-/* Reveal lines */
+/* ------------------- LINE REVEAL ------------------- */
 document.querySelectorAll('.line').forEach((l,i)=>{
   setTimeout(()=>l.style.opacity=1,i*700);
 });
 
-/* Sound + vibration */
-const beep=new Audio(
-'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
-);
-function alertUser(p){
+/* ------------------- SOUND + VIBRATION ------------------- */
+const beep=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA');
+let scaryInterval; // ➡️ continuous scary vibration/beeps
+let escalationLevel = 0; // ➡️ progressive escalation
+let chaturAudio = new Audio("chatur.mp3");
+
+/* Play beep + vibrate pattern */
+function alertUser(){
+  // progressive vibration pattern
+  let pattern = [200,100,200];
+  if(escalationLevel===1) pattern = [400,150,400];
+  if(escalationLevel===2) pattern = [600,200,600];
+  if('vibrate' in navigator) navigator.vibrate(pattern);
+
   beep.play().catch(()=>{});
-  navigator.vibrate && navigator.vibrate(p);
 }
 
-/* Button escalation */
+/* ------------------- BUTTON ESCALATION ------------------- */
 setTimeout(()=>{
   verifyBtn.classList.remove('hidden');
-  alertUser([200,100,200]);
+  alertUser();
 },7000);
 
 setTimeout(()=>{
-  verifyBtn.disabled=true;
-  verifyBtn.textContent="VERIFICATION DELAYED";
   reviewBtn.classList.remove('hidden');
   main.classList.add('shake');
-  alertUser([400,150,400]);
+  escalationLevel=0;
+
+  scaryInterval = setInterval(()=>{
+    escalationLevel++;
+    if(escalationLevel>2) escalationLevel=2;
+    main.classList.add('flash');
+    setTimeout(()=>main.classList.remove('flash'),300);
+    alertUser();
+  },1200);
 },10000);
 
-/* Countdown ONLY controls lock */
+/* ------------------- COUNTDOWN ------------------- */
 let t=60;
 const timer=setInterval(()=>{
   t--;
@@ -194,52 +186,31 @@ const timer=setInterval(()=>{
     clearInterval(timer);
     main.classList.add('hidden');
     locked.classList.remove('hidden');
-    alertUser([700,200,700]);
+    clearInterval(scaryInterval);
+    alertUser();
   }
 },1000);
 
-/* Navigation */
+/* ------------------- NAVIGATION ------------------- */
 verifyBtn.onclick=startQuestions;
 reviewBtn.onclick=startQuestions;
 
-let vibeInterval;
 function startQuestions(){
-  if (!audioUnlocked) {
-    beep = new Audio(
-      'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAA'
-    );
-    bgMusic = new Audio("./chatur.mp3");
-    bgMusic.volume = 0.4;
-    audioUnlocked = true;
-  }
-
   clearInterval(timer);
   main.classList.add('hidden');
   q1.classList.remove('hidden');
-
-  let vibePatterns = [[200,100], [100,200,100], [300,150], [150,300]];
-  let patternIndex = 0;
-
-  vibeInterval = setInterval(() => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(vibePatterns[patternIndex]);
-      patternIndex = (patternIndex + 1) % vibePatterns.length;
-    }
-  }, 1000);
 }
-  
-  // Stopping vibration and play song on q4
-  if (id === 'q4') {
-    clearInterval(vibeInterval);
-    vibeInterval = null;
-  }
-    if ('vibrate' in navigator){
-      navigator.vibrate(0);
-  }
-    const audio = new Audio("./chatur.mp3");
-    audio.volume=0.4
-    audio.play().catch(() => {});
 
+function next(id){
+  document.querySelector('.card:not(.hidden)').classList.add('hidden');
+  document.getElementById(id).classList.remove('hidden');
+
+  if(id==='q4'){
+    clearInterval(scaryInterval);
+    navigator.vibrate(0);
+    chaturAudio.volume=0.4;
+    chaturAudio.play().catch(()=>{});
+  }
 }
 
 function recover(){
@@ -247,26 +218,21 @@ function recover(){
   q1.classList.remove('hidden');
 }
 
-function next(id){
-  document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  document.getElementById(id).classList.remove('hidden');
-}
-
 function reveal(food){
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
-  finalMsg.innerHTML = `
-  Take a deep breath — no alerts, no tracking, just a New Year mischief.😊<br><br>
-    <span style="color:green;font-weight:bold;">REMEMBER:</span>
-    The most meaningful connections aren’t tracked — they’re felt.<br><br>
-    May you always have plenty of <strong>${food}</strong> and <strong>sparkling smiles</strong> this year!! 😋<br><br>
-    One real thing worth doing as you start the year:<br>
-    🔐 Review your Google account security here: <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/security</a><br><br> 
-    New year, new starts, new security habits 😉<br><br>
-    <span style="color:#7f8fa;font-size: 0.95rem;font-style:italic;">Authored by me, informed by the wider web.</span>
+  finalMsg.innerHTML=`
+  Take a deep breath — no alerts, no tracking, just a New Year mischief 😊<br><br>
+  <span style="color:green;font-weight:bold;">REMEMBER:</span>
+  The most meaningful connections aren’t tracked — they’re felt.<br><br>
+  May you always have plenty of <strong>${food}</strong> and <strong>sparkling smiles</strong> this year!! 😋<br><br>
+  One real thing worth doing as you start the year:<br>
+  🔐 Review your Google account security here: 
+  <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/security</a><br><br>
+  New year, new starts, new security habits 😉<br><br>
+  <span style="color:#7f8fa;font-size:0.95rem;font-style:italic;">Authored by me, informed by the wider web.</span>
   `;
   final.classList.remove('hidden');
 }
 </script>
-
 </body>
 </html>
