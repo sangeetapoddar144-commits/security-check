@@ -83,33 +83,22 @@ button:disabled{opacity:.6;cursor:not-allowed;}
   button{font-size:14px; padding:12px;}
 }
   #newYearBanner {
-  background: linear-gradient(90deg, #ff5f6d, #ffc371, #ffefba, #a0eafc);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.4rem;
-  text-align: center;
-  padding: 12px 0;
-  border-bottom: 4px solid #fff;
-  box-shadow: 0 0 20px rgba(255,255,255,0.6);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1001;
-  animation: rainbowText 3s ease-in-out infinite, pulse 1.5s infinite;
 }
 
-/* Gradient animation */
+/* Gradient animation 
 @keyframes rainbowText {
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
-}
+}*/
 
 #newYearBanner {
   background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* Pulse effect */
@@ -325,9 +314,9 @@ function recover(){
 
 // ===== FINAL REVEAL =====//
 function reveal(food){
-   // Hide any visible questions
-  //const active = document.querySelector('.card:not(.hidden)');
-  //if(active) active.classList.add('hidden')
+   // Hide any visible cards
+  const active = document.querySelector('.card:not(.hidden)');
+  if(active) active.classList.add('hidden')
 
   // Swap banners
   document.getElementById('googleHeader').classList.add('hidden');
