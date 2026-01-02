@@ -29,234 +29,28 @@ body{
 }
 .header img{width:22px}
 
-/* NEW YEAR BANNER */
+/* ===== NEW YEAR TEXT BANNER ===== */
 #newYearBanner{
   position:fixed;
   top:0;left:0;right:0;
   height:48px;
   z-index:1001;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(90deg,#7c2d12,#b45309,#7c2d12);
+  color:#fff;
+  font-weight:600;
+  letter-spacing:.3px;
+  text-align:center;
   box-shadow:0 4px 18px rgba(0,0,0,.35);
   animation: dropIn .8s ease-out;
+}
+#newYearBanner span{
+  animation: glow 1.6s ease-in-out infinite alternate;
 }
 @keyframes dropIn{
   from{transform:translateY(-100%);opacity:0}
   to{transform:translateY(0);opacity:1}
 }
-
-/* ===== CARDS ===== */
-.card{
-  max-width:420px;
-  margin:20px auto;
-  background:#121821;
-  border-radius:12px;
-  padding:22px;
-  box-shadow:0 0 35px rgba(255,0,0,.25);
-}
-.line{opacity:0;transition:.6s;margin:10px 0}
-.alert{color:#facc15}
-.danger{color:#ff4d4d;font-weight:600}
-.hidden{display:none}
-.small{font-size:12px;color:#9ca3af}
-
-/* FINAL CARD */
-#final{
-  margin:120px auto 40px;
-  animation: fadeUp .8s ease-out;
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* ===== BUTTONS ===== */
-button{
-  width:100%;
-  padding:14px;
-  margin-top:12px;
-  font-size:15px;
-  font-weight:600;
-  border-radius:6px;
-  border:1px solid #2c3440;
-  background:linear-gradient(#1f2937,#111827);
-  color:#e5e7eb;
-  cursor:pointer;
-}
-.primary{
-  background:#d93025;
-  border:none;
-  color:#fff;
-}
-.secondary{
-  background:linear-gradient(#374151,#1f2937);
-}
-button:disabled{opacity:.6;cursor:not-allowed}
-
-/* ===== EFFECTS ===== */
-.shake{animation:shake .4s linear 2}
-@keyframes shake{
-  25%{transform:translateX(-4px)}
-  50%{transform:translateX(4px)}
-  75%{transform:translateX(-4px)}
-}
-.flash{animation:flash 1s infinite}
-@keyframes flash{
-  0%,100%{box-shadow:0 0 35px rgba(255,0,0,.5)}
-  50%{box-shadow:0 0 60px rgba(255,255,0,.8)}
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:480px){
-  body{padding-top:48px}
-  .card{margin:15px;padding:16px}
-}
-</style>
-</head>
-
-<body>
-
-<!-- GOOGLE HEADER -->
-<div class="header" id="googleHeader">
-  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png">
-  <span>Google Account Security</span>
-</div>
-
-<!-- NEW YEAR BANNER -->
-<div class="hidden" id="newYearBanner">
-  <img src="https://media.giphy.com/media/3o6fJ1BM7R2EBRDnxK/giphy.gif"
-       style="width:100%;height:48px;object-fit:cover">
-</div>
-
-<!-- MAIN ALERT -->
-<div class="card" id="main">
-  <h2>Security Alert</h2>
-  <p class="line danger">Unusual sign-in attempt detected</p>
-  <p class="line">Suspicious activity blocked</p>
-  <p class="line">Device: <strong id="device"></strong></p>
-  <p class="line">Location: <strong id="region"></strong></p>
-  <p class="line alert">Action required to avoid restriction</p>
-  <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
-
-  <button id="verifyBtn" class="primary hidden">VERIFY & SECURE ACCOUNT</button>
-  <button id="reviewBtn" class="secondary hidden">REVIEW SECURITY ACTIVITY</button>
-
-  <p class="small">Case ID: G-SEC-<span id="ref"></span></p>
-</div>
-
-<!-- QUESTIONS -->
-<div class="card hidden" id="q1">
-  <h3>Security Check 1/4</h3>
-  <p>Did you attempt this sign-in?</p>
-  <button onclick="next('q2')">Yes</button>
-  <button onclick="next('q2')">No</button>
-</div>
-
-<div class="card hidden" id="q2">
-  <h3>Security Check 2/4</h3>
-  <p>Is this device familiar to you?</p>
-  <button onclick="next('q3')">Yes</button>
-  <button onclick="next('q3')">No</button>
-</div>
-
-<div class="card hidden" id="q3">
-  <h3>Security Check 3/4</h3>
-  <p>Did you download unknown files recently?</p>
-  <button onclick="next('q4')">Yes</button>
-  <button onclick="next('q4')">No</button>
-</div>
-
-<div class="card hidden" id="q4">
-  <h3>Final Verification</h3>
-  <p>What is your favourite food? 👀</p>
-  <button onclick="reveal('Biryani 🍗')">Biryani 🍗</button>
-  <button onclick="reveal('Pizza 🍕')">Pizza 🍕</button>
-  <button onclick="reveal('Chocolate 🍫')">Chocolate 🍫</button>
-</div>
-
-<!-- FINAL -->
-<div class="card hidden" id="final">
-  <h2>👻 Got you!!</h2>
-  <div id="finalMsg"></div>
-  <p style="margin-top:18px">— With love,<br><strong>Sangeeta</strong> 💛</p>
-</div>
-
-<script>
-const region=document.getElementById("region");
-const device=document.getElementById("device");
-const ref=document.getElementById("ref");
-const count=document.getElementById("count");
-const main=document.getElementById("main");
-const verifyBtn=document.getElementById("verifyBtn");
-const reviewBtn=document.getElementById("reviewBtn");
-const final=document.getElementById("final");
-const finalMsg=document.getElementById("finalMsg");
-
-region.textContent=["Berlin, DE","Amsterdam, NL","London, UK","Australia, AU"][Math.random()*4|0];
-device.textContent=["Pixel 7","iPhone 13 Pro","Galaxy S24 Ultra"][Math.random()*3|0];
-ref.textContent=Math.floor(100000+Math.random()*900000);
-
-document.querySelectorAll(".line").forEach((l,i)=>{
-  setTimeout(()=>l.style.opacity=1,i*700);
-});
-
-setTimeout(()=>verifyBtn.classList.remove("hidden"),7000);
-setTimeout(()=>{
-  verifyBtn.disabled=true;
-  verifyBtn.textContent="VERIFICATION DELAYED";
-  reviewBtn.classList.remove("hidden");
-  main.classList.add("shake");
-},10000);
-
-let t=60;
-setInterval(()=>{
-  t--;count.textContent=t;
-  if(t===10) main.classList.add("flash");
-},1000);
-
-verifyBtn.onclick=reviewBtn.onclick=()=>{main.classList.add("hidden");q1.classList.remove("hidden")};
-
-function next(id){
-  document.querySelector(".card:not(.hidden)").classList.add("hidden");
-  document.getElementById(id).classList.remove("hidden");
-}
-
-function reveal(food){
-  document.querySelector(".card:not(.hidden)").classList.add("hidden");
-  document.getElementById("googleHeader").classList.add("hidden");
-  document.getElementById("newYearBanner").classList.remove("hidden");
-  document.body.style.paddingTop="0";
-
-  finalMsg.innerHTML=`
-  <p style="font-size:1.05rem;line-height:1.6">
-  Take a deep breath — no alerts, no tracking, just a little New Year mischief 😊
-  </p>
-
-  <p style="margin-top:16px">
-  <span style="color:#22c55e;font-weight:700">REMEMBER:</span><br>
-  The most meaningful connections aren’t tracked — they’re felt.
-  </p>
-
-  <p style="margin-top:16px">
-  May you always have plenty of <strong>${food}</strong><br>
-  and <strong>sparkling smiles</strong> this year 😋
-  </p>
-
-  <hr style="border:0;border-top:1px solid #1f2937;margin:22px 0">
-
-  <p style="font-size:.95rem">
-  🔐 Review your Google account security here:<br>
-  <a href="https://myaccount.google.com/security" target="_blank">
-  myaccount.google.com/security
-  </a>
-  </p>
-
-  <p style="margin-top:16px;font-size:.9rem;color:#9ca3af;font-style:italic">
-  New year. New starts. Better security habits 😉
-  </p>
-  `;
-  final.classList.remove("hidden");
-}
-</script>
-
-</body>
-</html>
-
+@
