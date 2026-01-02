@@ -130,8 +130,10 @@ button:disabled{opacity:.6;cursor:not-allowed;}
 
 <!-- NEW YEAR BANNER (HIDDEN INITIALLY) -->
 <div class="header hidden" id="newYearBanner">
-  🎉✨ Happy New Year 2026 ✨🎉 <br>
-  Wishing you health, happiness & peace 💛
+  <img 
+  src="https://media.giphy.com/media/3o6fJ1BM7R2EBRDnxK/giphy.gif"
+  alt="Happy New Year"
+  style="width:100%; height:56px; object-fit:cover;">
 </div>
 
 <!-- ALERT -->
@@ -323,10 +325,14 @@ function recover(){
 
 // ===== FINAL REVEAL =====//
 function reveal(food){
-   //Hide old Google banner
-   document.querySelector('.header').classList.add('hidden');
-   // Show my newYear banner
+   // Hide any visible questions
+  const active = document.querySelector('.card:not(.hidden)');
+  if(active) active.classList.add('hidden')
+
+  // Swap banners
+  document.getElementById('googleHeader').classList.add('hidden');
   document.getElementById('newYearBanner').classList.remove('hidden');
+
   finalMsg.innerHTML = `
   Take a deep breath — no alerts, no tracking, just a New Year mischief.😊<br><br>
   <span style="color:green;font-weight:bold;">REMEMBER:</span>
