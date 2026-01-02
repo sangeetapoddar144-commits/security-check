@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Google Security Alert</title>
+<title>Security Alert</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -14,7 +14,7 @@ body{
   color:#eaeaea;
 }
 
-/* ===== HEADERS ===== */
+/* HEADER (TEXT ONLY) */
 .header{
   position:fixed;
   top:0;left:0;right:0;
@@ -23,13 +23,13 @@ body{
   padding:0 16px;
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
   border-bottom:1px solid #1f2937;
   z-index:1000;
+  font-weight:600;
 }
-.header img{width:22px}
 
-/* ===== NEW YEAR TEXT BANNER ===== */
+/* NEW YEAR TEXT BANNER – NO IMAGE */
 #newYearBanner{
   position:fixed;
   top:0;left:0;right:0;
@@ -38,19 +38,103 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(90deg,#7c2d12,#b45309,#7c2d12);
-  color:#fff;
+  background:#14532d;
+  color:#ecfdf5;
   font-weight:600;
   letter-spacing:.3px;
   text-align:center;
-  box-shadow:0 4px 18px rgba(0,0,0,.35);
-  animation: dropIn .8s ease-out;
+  animation: dropIn .6s ease-out;
 }
-#newYearBanner span{
-  animation: glow 1.6s ease-in-out infinite alternate;
-}
+
 @keyframes dropIn{
   from{transform:translateY(-100%);opacity:0}
   to{transform:translateY(0);opacity:1}
 }
-@
+
+/* CARDS */
+.card{
+  max-width:420px;
+  margin:20px auto;
+  background:#121821;
+  border-radius:12px;
+  padding:22px;
+  box-shadow:0 0 30px rgba(255,0,0,.25);
+}
+.line{opacity:0;transition:.6s;margin:10px 0}
+.alert{color:#facc15}
+.danger{color:#ff4d4d;font-weight:600}
+.hidden{display:none}
+.small{font-size:12px;color:#9ca3af}
+
+/* FINAL CARD */
+#final{
+  margin:120px auto 40px;
+  animation: fadeUp .7s ease-out;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* BUTTONS */
+button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  font-size:15px;
+  font-weight:600;
+  border-radius:6px;
+  border:1px solid #2c3440;
+  background:#1f2937;
+  color:#e5e7eb;
+  cursor:pointer;
+}
+.primary{background:#d93025;border:none;color:#fff}
+.secondary{background:#374151}
+button:disabled{opacity:.6}
+
+/* MOBILE */
+@media(max-width:480px){
+  body{padding-top:48px}
+  .card{margin:15px;padding:16px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- FAKE GOOGLE HEADER (TEXT ONLY) -->
+<div class="header" id="googleHeader">
+  Google Account Security
+</div>
+
+<!-- NEW YEAR BANNER (TEXT ONLY) -->
+<div class="hidden" id="newYearBanner">
+  🎉 Happy New Year to you and your family 🎉
+</div>
+
+<!-- MAIN -->
+<div class="card" id="main">
+  <h2>Security Alert</h2>
+  <p class="line danger">Unusual sign-in attempt detected</p>
+  <p class="line">Suspicious activity blocked</p>
+  <p class="line">Device: <strong id="device"></strong></p>
+  <p class="line">Location: <strong id="region"></strong></p>
+  <p class="line alert">Action required</p>
+  <p class="line">Auto-lock in <strong><span id="count">60</span>s</strong></p>
+
+  <button id="verifyBtn" class="primary hidden">VERIFY</button>
+  <button id="reviewBtn" class="secondary hidden">REVIEW</button>
+
+  <p class="small">Case ID: G-SEC-<span id="ref"></span></p>
+</div>
+
+<!-- QUESTIONS -->
+<div class="card hidden" id="q1">
+  <h3>Security Check</h3>
+  <p>Did you attempt this sign-in?</p>
+  <button onclick="next('q2')">Yes</button>
+  <button onclick="next('q2')">No</button>
+</div>
+
+<div class="c
