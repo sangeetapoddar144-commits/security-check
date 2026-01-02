@@ -82,6 +82,41 @@ button:disabled{opacity:.6;cursor:not-allowed;}
   .card{margin:15px; padding:16px;}
   button{font-size:14px; padding:12px;}
 }
+  #newYearBanner {
+  background: linear-gradient(90deg, #ff5f6d, #ffc371, #ffefba, #a0eafc);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 12px 0;
+  border-bottom: 4px solid #fff;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  animation: rainbowText 3s ease-in-out infinite, pulse 1.5s infinite;
+}
+
+/* Gradient animation */
+@keyframes rainbowText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+#newYearBanner {
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Pulse effect */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); text-shadow: 0 0 10px #fff; }
+  50% { transform: scale(1.05); text-shadow: 0 0 20px #fff; }
+}
 </style>
 </head>
 
@@ -282,6 +317,11 @@ function recover(){
 
 // ===== FINAL REVEAL =====//
 function reveal(food){
+   //Hide old Google banner
+   document.querySelector('.header').classList.add('hidden');
+   // Show my newYear banner
+  document.getElementById('newYearBanner').classList.remove('hidden');
+
   document.querySelector('.card:not(.hidden)').classList.add('hidden');
   finalMsg.innerHTML = `
   Take a deep breath — no alerts, no tracking, just a New Year mischief.😊<br><br>
