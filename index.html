@@ -339,7 +339,8 @@ const timer = setInterval(()=>{
     clearInterval(vibeInterval);
     main.classList.add('hidden');
     locked.classList.remove('hidden');
-    navigator.vibrate([800,200,800]);
+    
+    navigator.vibrate(0);
   }
 }, 1000);
 
