@@ -237,6 +237,10 @@ const reviewBtn = document.getElementById("reviewBtn");
 const final = document.getElementById("final");
 const finalMsg = document.getElementById("finalMsg");
 const locked = document.getElementById("locked");
+const q1 = document.getElementById("q1");
+const q2 = document.getElementById("q2");
+const q3 = document.getElementById("q3");
+const q4 = document.getElementById("q4");
 
 // ===== FAKE DATA =====
 const regions = ["Berlin, DE","Amsterdam, NL","London, UK", "Australia, AU"];
@@ -351,18 +355,6 @@ function alertUser(pattern){
   if(navigator.vibrate) navigator.vibrate(pattern);
 }
 
-// ===== FLASHY MODE =====
-function startScaryMode(){
-  if(vibeInterval) clearInterval(vibeInterval);
-  let index = 0;
-  vibeInterval = setInterval(()=>{
-    const rand = Math.floor(Math.random() * vibePatterns.length);
-    if('vibrate' in navigator) navigator.vibrate(vibePatterns[rand]);
-    beep.currentTime = 0;
-    beep.play().catch(()=>{});
-    index = (index+1)%vibePatterns.length;
-  },1200);
-}
 
 // ===== NAVIGATION =====
 verifyBtn.onclick = startQuestions;
@@ -433,14 +425,6 @@ function reveal(food){
   New year, new starts, new security habits 😉<br><br>
   <span style="color:#7f8fa;font-size:0.95rem;font-style:italic;">Authored by me, informed by the wider web.</span>
   `;
-  final.classList.remove('hidden');
-  function toggleMusic() {
-  if (bgMusic.paused) {
-    bgMusic.play();
-  } else {
-    bgMusic.pause();
-  }
-}
 
 }
 </script>
